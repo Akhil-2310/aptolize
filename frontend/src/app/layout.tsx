@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Banner } from "@/components/Banner";
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from '@/components/ui/toaster';
+import { WalletProvider } from "@/components/WalletProvider";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
@@ -23,12 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={clsx(dmSans.className, "antialiased")}>
+        <WalletProvider>
         <Banner />
         <Navbar />
         {children}
         <SpeedInsights />
         <Analytics />
         <Toaster />
+        </WalletProvider>
       </body>
     </html>
   );
