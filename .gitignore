@@ -13,6 +13,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+frontend_old
 dist
 build
 dist-ssr
@@ -33,3 +34,4 @@ pnpm-lock.yaml
 
 # template related files
 example-collection/
+
