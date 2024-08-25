@@ -73,7 +73,7 @@ export function WalletSelector() {
   ) : (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button>Connect a Wallet</Button>
+        <Button className="bg-white text-black py-2 px-4 rounded-lg hover:scale-[1.03] transition hover:bg-white">Connect Wallet</Button>
       </DialogTrigger>
       <ConnectWalletDialog close={closeDialog} />
     </Dialog>
@@ -94,7 +94,7 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
     <DialogContent className="max-h-screen overflow-auto">
       <AboutAptosConnect renderEducationScreen={renderEducationScreen}>
         <DialogHeader>
-          <DialogTitle className="flex flex-col text-center leading-snug">
+          <DialogTitle className="flex flex-col text-center leading-snug text-black">
             {hasAptosConnectWallets ? (
               <>
                 <span>Log in or sign up</span>
@@ -107,7 +107,7 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
         </DialogHeader>
 
         {hasAptosConnectWallets && (
-          <div className="flex flex-col gap-2 pt-3">
+          <div className="flex flex-col gap-2 pt-3 text-black">
             {aptosConnectWallets.map((wallet) => (
               <AptosConnectWalletRow key={wallet.name} wallet={wallet} onConnect={close} />
             ))}
@@ -190,7 +190,7 @@ function AptosConnectWalletRow({ wallet, onConnect }: WalletRowProps) {
   return (
     <WalletItem wallet={wallet} onConnect={onConnect}>
       <WalletItem.ConnectButton asChild>
-        <Button size="lg" variant="outline" className="w-full gap-4">
+        <Button size="lg" variant="outline" className="w-full gap-4 text-black">
           <WalletItem.Icon className="h-5 w-5" />
           <WalletItem.Name className="text-base font-normal" />
         </Button>

@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx(dmSans.className, "antialiased")}>
+      <body className={`${clsx(dmSans.className, "antialiased")} bg-black h-screen`}>
         <WalletProvider>
         <Banner />
         <Navbar />
