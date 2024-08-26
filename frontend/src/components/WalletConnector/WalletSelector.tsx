@@ -12,7 +12,7 @@ import {
   useWallet,
 } from "@aptos-labs/wallet-adapter-react";
 import { ArrowLeft, ArrowRight, ChevronDown, Copy, LogOut, User } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 // Internal components
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -49,6 +49,12 @@ export function WalletSelector() {
     }
   }, [account?.address, toast]);
 
+  useEffect(() => {
+    console.log("WalletSelector: connected", connected);
+    console.log("WalletSelector: account", account);
+    console.log("WalletSelector: wallet", wallet);
+  }, []);
+
   return connected ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -73,7 +79,9 @@ export function WalletSelector() {
   ) : (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-white text-black py-2 px-4 rounded-lg hover:scale-[1.03] transition hover:bg-white">Connect Wallet</Button>
+        <Button className="bg-white text-black py-2 px-4 rounded-lg hover:scale-[1.03] transition hover:bg-white">
+          Connect Wallet
+        </Button>
       </DialogTrigger>
       <ConnectWalletDialog close={closeDialog} />
     </Dialog>
@@ -125,15 +133,15 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
               </p>
               <AptosPrivacyPolicy.PoweredBy className="flex gap-1.5 items-center text-xs leading-5 text-muted-foreground" />
             </AptosPrivacyPolicy>
-            <div className="flex items-center gap-3 pt-4 text-muted-foreground">
+            {/* <div className="flex items-center gap-3 pt-4 text-muted-foreground">
               <div className="h-px w-full bg-secondary" />
               Or
               <div className="h-px w-full bg-secondary" />
-            </div>
+            </div> */}
           </div>
         )}
 
-        <div className="flex flex-col gap-3 pt-3">
+        {/* <div className="flex flex-col gap-3 pt-3">
           {availableWallets.map((wallet) => (
             <WalletRow key={wallet.name} wallet={wallet} onConnect={close} />
           ))}
@@ -151,7 +159,7 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
               </CollapsibleContent>
             </Collapsible>
           )}
-        </div>
+        </div> */}
       </AboutAptosConnect>
     </DialogContent>
   );
@@ -179,7 +187,9 @@ function WalletRow({ wallet, onConnect }: WalletRowProps) {
         </Button>
       ) : (
         <WalletItem.ConnectButton asChild>
-          <Button className="bg-white text-black py-2 px-4 rounded-lg hover:scale-[1.03] transition" size="sm">Connect</Button>
+          <Button className="bg-white text-black py-2 px-4 rounded-lg hover:scale-[1.03] transition" size="sm">
+            Connect
+          </Button>
         </WalletItem.ConnectButton>
       )}
     </WalletItem>

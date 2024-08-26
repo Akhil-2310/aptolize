@@ -1,0 +1,88 @@
+import { NextResponse, NextRequest } from "next/server";
+import mongoose from "mongoose";
+import { client, Document } from "@/lib/connectDB";
+
+const mongoURI = process.env.NEXT_PUBLIC_MONGODB_URI;
+
+if (!mongoURI) {
+  throw new Error("MONGODB_URI is not defined in the environment variables.");
+}
+mongoose.connect(mongoURI).then(() => console.log("Connected! to db"));
+
+export const GET = async (request: NextRequest) => {
+  try {
+    const url = new URL(request.url);
+    const getAllAddresses = url.searchParams.get("getAllAddresses");
+
+    if (getAllAddresses === "true") {
+      // Fetch all addresses
+      const addresses = await Document.find({}, "address").lean();
+
+      return NextResponse.json(
+        {
+          addresses: addresses.map((user) => user.address),
+        },
+        { status: 200 },
+      );
+    } else {
+      // Existing logic for fetching a single user's details
+      const address = url.searchParams.get("address");
+
+      if (!address) {
+        return NextResponse.json({ error: "Address parameter is required" }, { status: 400 });
+      }
+
+      const user = await Document.findOne({ address });
+
+      if (!user) {
+        return NextResponse.json({ error: "User not found" }, { status: 404 });
+      }
+
+      return NextResponse.json(
+        {
+          address: user.address,
+          totalDeposits: user.totalDeposits,
+          depositTimestamp: user.depositTimestamp,
+        },
+        { status: 200 },
+      );
+    }
+  } catch (error) {
+    console.error("Error in GET:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+};
+
+export const POST = async (request: NextRequest) => {
+  console.log("POST request received");
+  try {
+    console.log("POST request received", request);
+    const body = await request.json();
+    const { name, email, address } = body;
+
+    if (!address) {
+      return NextResponse.json({ error: "Address is required" }, { status: 400 });
+    }
+
+    // Check if user with this address already exists
+    const existingUser = await Document.findOne({ address });
+    if (existingUser) {
+      return NextResponse.json({ error: "User with this address already exists" }, { status: 409 });
+    }
+
+    // Create new user
+    const newUser = new Document({
+      name,
+      email,
+      address,
+    });
+
+    // Save the user to the database
+    await newUser.save();
+
+    return NextResponse.json({ message: "User created successfully", user: newUser }, { status: 201 });
+  } catch (error) {
+    console.error("Error in POST:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+};
