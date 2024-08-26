@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import DepositDialogButton from "@/components/DepositDialog";
 
 const DashboardPage = () => {
   // Dummy data for the metrics
@@ -67,7 +68,8 @@ const DashboardPage = () => {
         </div>
 
         <div className="flex justify-around">
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">Deposit</Button>
+          <DepositDialogButton />
+          {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">Deposit</Button> */}
           <Button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">Withdraw</Button>
           <Button className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md" onClick={handelCliks}>
             Claim Lottery Rewards
