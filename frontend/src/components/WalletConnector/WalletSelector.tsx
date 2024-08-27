@@ -1,3 +1,5 @@
+"use client";
+
 import {
   APTOS_CONNECT_ACCOUNT_URL,
   AboutAptosConnect,
@@ -49,11 +51,11 @@ export function WalletSelector() {
     }
   }, [account?.address, toast]);
 
-  useEffect(() => {
-    console.log("WalletSelector: connected", connected);
-    console.log("WalletSelector: account", account);
-    console.log("WalletSelector: wallet", wallet);
-  }, []);
+  // useEffect(() => {
+  //   console.log("WalletSelector: connected", connected);
+  //   console.log("WalletSelector: account", account);
+  //   console.log("WalletSelector: wallet", wallet);
+  // }, []);
 
   return connected ? (
     <DropdownMenu>
