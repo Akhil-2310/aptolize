@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import mongoose from "mongoose";
 import { client, Document } from "@/lib/connectDB";
 
-const mongoURI = process.env.MONGODB_URI;
+const mongoURI = process.env.NEXT_PUBLIC_MONGODB_URI;
 
 if (!mongoURI) {
   throw new Error("MONGODB_URI is not defined in the environment variables.");
