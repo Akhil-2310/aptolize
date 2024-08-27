@@ -29,14 +29,14 @@ const DepositDialogButton = () => {
 
     const userEndPointResponse = await axios.get("/api/user?address=" + account?.address);
     const depositAmount = userEndPointResponse.data.totalDeposits
-    console.log("depositAmount", depositAmount)
+    console.log("depositAmount", depositAmount);
 
     const depositEndPointResponse = await axios.post("/api/deposit", {
       address: account?.address,
       totalDeposits: depositAmount + amount,
       depositTimestamp: new Date()
     });
-    console.log("depositEndPointResponse", depositEndPointResponse)
+    console.log("depositEndPointResponse", depositEndPointResponse);
 
     setAmount(0);
   };

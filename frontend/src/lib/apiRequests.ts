@@ -39,6 +39,14 @@ export async function swapAptToZUsdc(amount: string) {
     return await panoraSwap(APTOS_COIN, zUSDC_TOKEN, amount, toWalletAddress, privateKey);
 }
 
+export async function swapWUsdcToApt(amount: string) {
+    return await panoraSwap(wUSDC_TOKEN, APTOS_COIN, amount, toWalletAddress, privateKey);
+}
+
+export async function swapZUsdcToApt(amount: string) {
+    return await panoraSwap(zUSDC_TOKEN, APTOS_COIN, amount, toWalletAddress, privateKey);
+}
+
 export async function swapCellToApt(amount: string) {
     return await panoraSwap(CELL_TOKEN, APTOS_COIN, amount, toWalletAddress, privateKey);
 }
@@ -118,12 +126,59 @@ export async function stakeWusdcZusdcPair(wUsdcAmount, zUsdcAmount) {
 }
 
 //@ts-ignore
+export async function unstakeWusdcZusdcPair(lpToken) {
+    const transaction = await aptos_mainnet.transaction.build.simple({
+        sender: admin.accountAddress,
+        data: {
+            function: `${cellanaAddress}::router::unstake_and_remove_liquidity_both_coins_entry`,
+            typeArguments: [wUSDC_TOKEN, zUSDC_TOKEN],
+            functionArguments: [true, lpToken, 0, 0, admin.accountAddress],
+        },
+    });
+
+    const committedTxn = await aptos_mainnet.signAndSubmitTransaction({
+        signer: admin,
+        transaction: transaction,
+    });
+    const response = await aptos_mainnet.waitForTransaction({ transactionHash: committedTxn.hash });
+    return response;
+}
+
+//@ts-ignore
 export async function deposit(user, amount, signTransaction) {
     const transaction = await aptos_devnet.transaction.build.multiAgent({
         sender: admin.accountAddress,
         secondarySignerAddresses: [user.address],
         data: {
             function: `${aptolizeAddress}::aptolize::deposit`,
+            functionArguments: [amount],
+        },
+    });
+
+    const adminSenderAuthenticator = aptos_devnet.transaction.sign({
+        signer: admin,
+        transaction: transaction,
+    });
+
+    const userSenderAuthenticator = await signTransaction(transaction);
+
+    const committedTxn = await aptos_devnet.transaction.submit.multiAgent({
+        transaction,
+        senderAuthenticator: adminSenderAuthenticator,
+        additionalSignersAuthenticators: [userSenderAuthenticator],
+    });
+
+    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash });
+    return response;
+}
+
+//@ts-ignore
+export async function withdraw(user, amount, signTransaction) {
+    const transaction = await aptos_devnet.transaction.build.multiAgent({
+        sender: admin.accountAddress,
+        secondarySignerAddresses: [user.address],
+        data: {
+            function: `${aptolizeAddress}::aptolize::withdraw`,
             functionArguments: [amount],
         },
     });
