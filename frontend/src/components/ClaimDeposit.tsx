@@ -1,0 +1,36 @@
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
+function ClaimRewardsDialog({ totalClaim }: { totalClaim: string }) {
+  const [isClaimed, setIsClaimed] = useState(false);
+
+  const handleConfirm = () => {
+    // Handle the reward claim logic here
+    console.log(`Claiming ${totalClaim} USDT`);
+    setIsClaimed(true); // Update state to indicate that the reward has been claimed
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">
+          {isClaimed ? "Claimed" : "Claim Rewards"}
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Claim Lottery Rewards</DialogTitle>
+        <DialogDescription>
+          You have won a total of {totalClaim} USDT in the lottery. Click Confirm to claim your rewards.
+        </DialogDescription>
+        <div className="mt-4 flex justify-end">
+          <Button variant="default" onClick={handleConfirm} disabled={isClaimed}>
+            Confirm
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default ClaimRewardsDialog;
