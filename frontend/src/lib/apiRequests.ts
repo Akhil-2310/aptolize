@@ -13,6 +13,7 @@ import Panora from "@panoraexchange/swap-sdk";
 const APTOS_COIN = "0x1::aptos_coin::AptosCoin";
 const wUSDC_TOKEN = "0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::T";
 const zUSDC_TOKEN = "0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC";
+const CELL_TOKEN = "0x2ebb2ccac5e027a87fa0e2e5f656a3a4238d6a48d93ec9b610d570fc0aa0df12";
 const toWalletAddress = "0xfff0b85abd60c84d99ea725cede9d711276c09e2ec435a45777df0ca933b27cc";
 
 const privateKey = process.env.NEXT_PUBLIC_ADMIN_PK as string;
@@ -40,6 +41,11 @@ export async function swapAptToZUsdc(amount: string) {
     return await panoraSwap(APTOS_COIN, zUSDC_TOKEN, amount, toWalletAddress, privateKey);
 }
 
+export async function swapCellToApt(amount: string) {
+    return await panoraSwap(CELL_TOKEN, APTOS_COIN, amount, toWalletAddress, privateKey);
+}
+
+//@ts-ignore
 export async function panoraSwap(fromTokenAddress, toTokenAddress, fromTokenAmount, toWalletAddress, privateKey) {
     try {
         const response = await client.ExactInSwap(
@@ -70,6 +76,31 @@ export async function panoraSwap(fromTokenAddress, toTokenAddress, fromTokenAmou
     }
 }
 
+export async function cellTokenPrice() {
+    return await panoraTokenPrice(CELL_TOKEN);
+
+}
+
+//@ts-ignore
+export async function panoraTokenPrice(tokenAddress) {
+    try {
+        const response = await client.ExactInSwapQuote(
+            {
+                "chainId": "1",
+                "fromTokenAddress": tokenAddress,
+                "toTokenAddress": APTOS_COIN,
+                "fromTokenAmount": "1",
+            },
+        );
+        const tokenPriceInUsd = parseFloat(response.quotes[0].toTokenAmountUSD)
+        return tokenPriceInUsd;
+    } catch (error) {
+        console.error("Error while checking quote:", error);
+        throw error;
+    }
+}
+
+//@ts-ignore
 export async function stakeWusdcZusdcPair(wUsdcAmount, zUsdcAmount) {
     const transaction = await aptos_mainnet.transaction.build.simple({
         sender: admin.accountAddress,
@@ -89,8 +120,8 @@ export async function stakeWusdcZusdcPair(wUsdcAmount, zUsdcAmount) {
     return response
 }
 
+//@ts-ignore
 export async function deposit(user, amount, signTransaction) {
-    console.log("user.address", user.address)
     const transaction = await aptos_devnet.transaction.build.multiAgent({
         sender: admin.accountAddress,
         secondarySignerAddresses: [user.address],
@@ -114,6 +145,25 @@ export async function deposit(user, amount, signTransaction) {
         additionalSignersAuthenticators: [userSenderAuthenticator],
     });
 
+    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash });
+    return response
+}
+
+//@ts-ignore
+export async function pickWinner(users, amount) {
+    const transaction = await aptos_devnet.transaction.build.simple({
+        sender: admin.accountAddress,
+        data: {
+            function: `${aptolizeAddress}::aptolize::pick_winner`,
+            functionArguments: [users, amount],
+        },
+    });
+
+    const committedTxn = await aptos_devnet.signAndSubmitTransaction(
+        {
+            signer: admin,
+            transaction: transaction
+        });
     const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash });
     return response
 }

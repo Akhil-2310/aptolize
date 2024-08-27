@@ -31,7 +31,7 @@ const documentSchema = new Schema({
   name: { type: String },
   email: { type: String },
   address: { type: String },
-  totalDeposits: { type: String, default: "0" },
+  totalDeposits: { type: Number, default: 0 },
   depositTimestamp: { type: String, default: "0" },
 });
 
