@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import mongoose from "mongoose";
 import { Document } from "@/lib/connectDB";
-import { cellTokenPrice, pickWinner, swapCellToApt } from "@/lib/apiRequests";
+import { cellTokenPrice, claimRewards, getRewardAmount, pickWinner, swapCellToApt, swapCellToWusdc } from "@/lib/apiRequests";
 import { AccountAddress, MoveVector, Serializer } from "@aptos-labs/ts-sdk";
 
 const mongoURI = process.env.NEXT_PUBLIC_MONGODB_URI;
@@ -34,10 +34,18 @@ export const POST = async (request: NextRequest) => {
         const totalDepositsFivePercentagePerDayInCell = totalDepositsFivePercentagePerDay / cellTokenPriceInUsd
         const amount = BigInt(Math.round(totalDepositsFivePercentagePerDayInCell * 1e6) * 10 ** 8);
 
-        // TODO: Claim the reward from cellana finance
+        const rewardAmount = await getRewardAmount();
+        console.log("rewardAmount", rewardAmount)
+        const claimRewardResponse = await claimRewards();
+        console.log("claimRewardResponse", claimRewardResponse)
 
-        const swapCellToAptResponse = await swapCellToApt("0.01");
-        console.log("swapCellToAptResponse", swapCellToAptResponse);
+        if (rewardAmount) {
+            const swapCellToWusdcResponse = await swapCellToWusdc(rewardAmount as string);
+            console.log("swapCellToWusdcResponse", swapCellToWusdcResponse);
+        }
+
+        // const swapCellToAptResponse = await swapCellToApt("0.01");
+        // console.log("swapCellToAptResponse", swapCellToAptResponse);
         const pickWinnerResponse = await pickWinner(eligibleUsers, amount);
         console.log("pickWinnerResponse", pickWinnerResponse);
 

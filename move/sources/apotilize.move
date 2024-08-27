@@ -148,6 +148,13 @@ module aptolize_addr::aptolize {
         borrow_global<AdminData>(admin_addr).winner == user
     }
 
+    #[view]
+    public fun lottery(): u64
+    acquires AdminData {
+        assert!(exists<AdminData>(@aptolize_addr), error::not_found(ENO_MESSAGE));
+        borrow_global<AdminData>(@aptolize_addr).lottery
+    }
+
     // #[test(account = @0x1)]
     // public entry fun sender_can_set_message(account: signer) acquires MessageHolder {
     //     let addr = signer::address_of(&account);

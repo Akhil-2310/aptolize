@@ -52,6 +52,10 @@ export async function swapCellToApt(amount: string) {
     return await panoraSwap(CELL_TOKEN, APTOS_COIN, amount, toWalletAddress, privateKey);
 }
 
+export async function swapCellToWusdc(amount: string) {
+    return await panoraSwap(CELL_TOKEN, wUSDC_TOKEN, amount, toWalletAddress, privateKey);
+}
+
 //@ts-ignore
 export async function panoraSwap(fromTokenAddress, toTokenAddress, fromTokenAmount, toWalletAddress, privateKey) {
     try {
@@ -143,6 +147,37 @@ export async function unstakeWusdcZusdcPair(lpToken) {
     });
     const response = await aptos_mainnet.waitForTransaction({ transactionHash: committedTxn.hash });
     return response;
+}
+
+//@ts-ignore
+export async function claimRewards() {
+    const transaction = await aptos_mainnet.transaction.build.simple({
+        sender: admin.accountAddress,
+        data: {
+            function: `${cellanaAddress}::vote_manager::claim_emissions_entry`,
+            // typeArguments: [wUSDC_TOKEN, zUSDC_TOKEN],
+            functionArguments: ["0xcfaadbe8c0cc5c7cdaa3aefd7c184830d12f2991d1ae70176337550b155a1780"],
+        },
+    });
+
+    const committedTxn = await aptos_mainnet.signAndSubmitTransaction({
+        signer: admin,
+        transaction: transaction,
+    });
+    const response = await aptos_mainnet.waitForTransaction({ transactionHash: committedTxn.hash });
+    return response;
+}
+
+//@ts-ignore
+export async function getRewardAmount() {
+    const payload: InputViewFunctionData = {
+        function: `${cellanaAddress}::vote_manager::claimable_emissions`,
+        functionArguments: [admin.accountAddress, "0xcfaadbe8c0cc5c7cdaa3aefd7c184830d12f2991d1ae70176337550b155a1780"],
+    };
+
+    const amount = (await aptos_mainnet.view({ payload }))[0];
+
+    return amount
 }
 
 //@ts-ignore
