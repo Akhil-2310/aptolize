@@ -1,7 +1,7 @@
 'use client'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image';
-import logoImg from '../assets/images/logosaas.png';
+import logoImg from '../assets/images/logo.png';
 import MenuIcon from '../assets/icons/menu.svg';
 import Link from 'next/link';
 import { WalletSelector } from './WalletConnector/WalletSelector';
