@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { deposit, stakeWusdcZusdcPair, swapAptToWUsdc, swapAptToZUsdc } from "@/lib/apiRequests";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import axios from "axios";
 
 const DepositDialogButton = () => {
   const { account, signTransaction } = useWallet();
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
 
   const handleConfirm = async () => {
     console.log(`Depositing ${amount} USDT`);
@@ -26,7 +27,18 @@ const DepositDialogButton = () => {
     const depositReponse = await deposit(account, amount, signTransaction);
     console.log("depositReponse", depositReponse);
 
-    setAmount("");
+    const userEndPointResponse = await axios.get("/api/user?address=" + account?.address);
+    const depositAmount = userEndPointResponse.data.totalDeposits
+    console.log("depositAmount", depositAmount)
+
+    const depositEndPointResponse = await axios.post("/api/deposit", {
+      address: account?.address,
+      totalDeposits: depositAmount + amount,
+      depositTimestamp: new Date()
+    });
+    console.log("depositEndPointResponse", depositEndPointResponse)
+
+    setAmount(0);
   };
 
   return (
@@ -36,9 +48,9 @@ const DepositDialogButton = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Deposit</DialogTitle>
-        <DialogDescription>Please enter the amount of USDT you want to deposit.</DialogDescription>
+        <DialogDescription>Please enter the amount of USD you want to deposit.</DialogDescription>
         <div className="mt-4">
-          <Input type="number" placeholder="Enter amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
+          <Input type="number" placeholder="Enter deposit amount" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
         </div>
         <div className="mt-4 flex justify-end">
           <Button variant="default" onClick={handleConfirm}>
