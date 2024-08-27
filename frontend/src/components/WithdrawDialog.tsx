@@ -61,7 +61,7 @@ function WithdrawDialog({ totalDeposit }: { totalDeposit: string }) {
           You have a total Deposits of {totalDeposit} USDT. Please enter the amount you want to withdraw.
         </DialogDescription>
         <div className="mt-4">
-          <Input type="number" placeholder="Enter amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
+          <Input type="number" placeholder="Enter amount" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
         </div>
         <div className="mt-4 flex justify-end">
           <Button variant="default" onClick={handleConfirm}>
