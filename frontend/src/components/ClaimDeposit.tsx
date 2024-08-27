@@ -1,13 +1,24 @@
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { InputViewFunctionData } from "@aptos-labs/ts-sdk";
+import { getLotteryAmount, swapWUsdcToApt } from "@/lib/apiRequests";
 
 function ClaimRewardsDialog({ totalClaim }: { totalClaim: string }) {
   const [isClaimed, setIsClaimed] = useState(false);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     // Handle the reward claim logic here
     console.log(`Claiming ${totalClaim} USDT`);
+
+    const lotteryAmountInUsd = await getLotteryAmount() as string;
+    console.log("lotteryAmountInUsd", lotteryAmountInUsd)
+
+    const wUsdcSwapResponse = await swapWUsdcToApt(lotteryAmountInUsd);
+    console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
+
+    // TODO: Offramp APT
+
     setIsClaimed(true); // Update state to indicate that the reward has been claimed
   };
 

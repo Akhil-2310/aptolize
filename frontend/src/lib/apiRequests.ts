@@ -7,6 +7,7 @@ import {
     U64,
     Network,
     AptosConfig,
+    InputViewFunctionData,
 } from "@aptos-labs/ts-sdk";
 import Panora from "@panoraexchange/swap-sdk";
 
@@ -217,4 +218,14 @@ export async function pickWinner(users, amount) {
         });
     const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash });
     return response
+}
+
+export async function getLotteryAmount() {
+    const payload: InputViewFunctionData = {
+        function: `${aptolizeAddress}::aptolize::lottery`,
+    };
+
+    const amount = (await aptos_devnet.view({ payload }))[0];
+
+    return amount?.toString()
 }

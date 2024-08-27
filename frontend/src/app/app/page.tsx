@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import DepositDialogButton from "@/components/DepositDialog";
-// import ClaimRewardsDialog from "@/components/ClaimDeposit";
+import ClaimRewardsDialog from "@/components/ClaimDeposit";
 import WithdrawDialog from "@/components/WithdrawDialog";
 
 const DashboardPage = () => {
@@ -72,12 +72,13 @@ const DashboardPage = () => {
         <div className="flex justify-around">
           <DepositDialogButton />
           <WithdrawDialog totalDeposit="123" />
+          <ClaimRewardsDialog totalClaim="123" />
 
           {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">Deposit</Button> */}
           {/* <Button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">Withdraw</Button> */}
-          <Button className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md" onClick={handelCliks}>
+          {/* <Button className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md" onClick={handelCliks}>
             Claim Lottery Rewards
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

@@ -58,7 +58,7 @@ function WithdrawDialog({ totalDeposit }: { totalDeposit: string }) {
       <DialogContent>
         <DialogTitle>Withdraw</DialogTitle>
         <DialogDescription>
-          You have a total Deposits of {totalDeposit} USDT. Please enter the amount you want to withdraw.
+          You have a total Deposits of {totalDeposit} USD. Please enter the amount you want to withdraw.
         </DialogDescription>
         <div className="mt-4">
           <Input type="number" placeholder="Enter amount" value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} />
