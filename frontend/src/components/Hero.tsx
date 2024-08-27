@@ -37,12 +37,12 @@ export const Hero = () => {
             <h1 className="text-7xl sm:text-5xl font-bold tracking-tighter text-center ">
               Earn More, Win More
             </h1>
-            <motion.div className="absolute right-[576px] top-[120px]" style={{ translateY }}>
+            {/* <motion.div className="absolute right-[576px] top-[120px]" style={{ translateY }}>
               <Image src={cursorImage} alt="Cursor" height={200} width={200} className="max-w-none" draggable="false" />
-            </motion.div>
-            <motion.div className="absolute left-[600px] top-[62px]" style={{ translateY }}>
+            </motion.div> */}
+            {/* <motion.div className="absolute left-[600px] top-[62px]" style={{ translateY }}>
               <Image src={messageImage} alt="Message" height={200} width={200} className="max-w-none" draggable="false" />
-            </motion.div>
+            </motion.div> */}
           </div>
         </div>
         <div className="flex justify-center">
