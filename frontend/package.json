@@ -29,6 +29,7 @@
     "lucide-react": "^0.435.0",
     "mongoose": "^8.5.4",
     "next": "14.2.4",
+    "next-themes": "^0.3.0",
     "petra-plugin-wallet-adapter": "^0.4.5",
     "react": "^18",
     "react-dom": "^18",
