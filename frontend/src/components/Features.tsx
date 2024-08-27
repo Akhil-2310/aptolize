@@ -5,17 +5,17 @@ const features = [
   {
     title: "Maximize Your Earnings",
     description:
-      "Deposit USDT and get a high-yield liquidity pair that generates a robust 16% APY.",
+      "Deposit fiat and get a fixed interest of 10%.",
   },
   {
     title: "Daily Reward Management",
     description:
-      "Enjoy daily rewards and reinvests a portion to boost your staking amount.",
+      "Enjoy daily rewards when luck favors you.",
   },
   {
     title: "Win Big Every Day",
     description:
-      "Participate in our daily lotteries, where the longer you stake, the higher your chances of winning additional rewards.",
+      "Participate in our daily lotteries, where the longer you deposit, the higher your chances of winning additional rewards.",
   },
 ];
 

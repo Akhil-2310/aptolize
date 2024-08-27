@@ -26,9 +26,9 @@ export const CallToAction = () => {
         <motion.div style={{ translateY }} >
           <Image src={emojiStarImage} alt="emoji star" className="absolute -top-[90px] right-[calc(100%+24px)]" />
         </motion.div>
-        <h2 className="font-bold text-5xl sm:text-6xl tracking-tighter">Earn Rewards with your Crypto</h2>
+        <h2 className="font-bold text-5xl sm:text-6xl tracking-tighter">Earn Rewards with your Fiat</h2>
         <p className="text-xl text-white/70 mt-5">
-          Start using Aptolize today and start earning yields on your crypto, with amazing rewards.
+          Start using Aptolize today and start earning yields on your fiat deposit, with amazing rewards.
         </p>
         <form className="mt-10 flex flex-col sm:flex-row gap-2.5 max-w-md mx-auto">
           <input type="email" placeholder="your@email.com" className=" bg-white/20 rounded-lg  py-3 px-5 outline-none font-medium placeholder:text-[#9CA3AF] flex-1" />

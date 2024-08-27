@@ -8,28 +8,23 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const items = [
   {
-    question: "What is the minimum amount required to start staking?",
+    question: "What is the minimum amount required to start depositing?",
     answer:
-      "There is no minimum amount required. You can start staking with any amount of USDT that you’re comfortable with.",
+      "There is no minimum amount required. You can start depositing with any amount of fiat that you’re comfortable with.",
   },
   {
     question: "How does the lottery system work?",
     answer:
-      "Every day, 5% of the staking rewards are pooled to fund the lottery. The longer you keep your funds staked, the higher your chances of winning. Winners are selected randomly, and rewards are automatically added to your staked amount",
+      "Each day, we run a lottery where the longer you keep your funds deposited, the higher your chances of winning. Winners are selected randomly, and you can easily claim your rewards.",
   },
   {
     question: "Can I withdraw my funds at any time?",
     answer:
-      "Yes, you can withdraw your funds along with any accrued rewards at any time. The process involves unstaking the liquidity pair, converting USDC back to USDT, and transferring the full amount to your wallet.",
+      "Yes, you can withdraw your funds along with any accrued rewards at any time.",
   },
   {
-    question: "How are rewards calculated and distributed?",
-    answer:
-      " Rewards are calculated based on the staked liquidity pair and are distributed daily. 10% of the rewards are reinvested into your staked amount, 5% funds the lottery, and 1% is retained as a platform fee.",
-  },
-  {
-    question: "What happens if I withdraw my funds before the end of the staking period?",
-    answer: "You are free to withdraw your funds at any time without any penalties. However, withdrawing early means you may miss out on the benefits of compounding rewards and lottery participation."
+    question: "What happens if I withdraw my funds before the end of the maturity period?",
+    answer: "You are free to withdraw your funds at any time without any penalties. However, withdrawing early means you may miss out on the benefit of lottery participation."
   }
 ];
 
