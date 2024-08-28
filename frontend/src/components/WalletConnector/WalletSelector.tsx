@@ -104,12 +104,12 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
   return (
     <DialogContent className="max-h-screen overflow-auto">
       <AboutAptosConnect renderEducationScreen={renderEducationScreen}>
-        <DialogHeader>
-          <DialogTitle className="flex flex-col text-center leading-snug text-black">
+        <DialogHeader >
+          <DialogTitle className="flex flex-col text-center leading-snug">
             {hasAptosConnectWallets ? (
               <>
-                <span>Log in or sign up</span>
-                <span>with Social + Aptos Connect</span>
+                <span className="text-white">Log in or sign up</span>
+                <span className="text-white">with Social + Aptos Connect</span>
               </>
             ) : (
               "Connect Wallet"
@@ -118,7 +118,7 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
         </DialogHeader>
 
         {hasAptosConnectWallets && (
-          <div className="flex flex-col gap-2 pt-3 text-black">
+          <div className="flex flex-col gap-2 pt-3 ">
             {aptosConnectWallets.map((wallet) => (
               <AptosConnectWalletRow key={wallet.name} wallet={wallet} onConnect={close} />
             ))}
@@ -131,10 +131,10 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
             <AptosPrivacyPolicy className="flex flex-col items-center py-1">
               <p className="text-xs leading-5">
                 <AptosPrivacyPolicy.Disclaimer />{" "}
-                <AptosPrivacyPolicy.Link className="text-muted-foreground underline underline-offset-4" />
+                <AptosPrivacyPolicy.Link className="text-muted-foreground underline underline-offset-4 " />
                 <span className="text-muted-foreground">.</span>
               </p>
-              <AptosPrivacyPolicy.PoweredBy className="flex gap-1.5 items-center text-xs leading-5 text-muted-foreground" />
+              <AptosPrivacyPolicy.PoweredBy className="flex gap-1.5 items-center text-xs leading-5 text-muted-foreground " />
             </AptosPrivacyPolicy>
             {/* <div className="flex items-center gap-3 pt-4 text-muted-foreground">
               <div className="h-px w-full bg-secondary" />
@@ -203,7 +203,7 @@ function AptosConnectWalletRow({ wallet, onConnect }: WalletRowProps) {
   return (
     <WalletItem wallet={wallet} onConnect={onConnect}>
       <WalletItem.ConnectButton asChild>
-        <Button size="lg" variant="outline" className="w-full gap-4 text-black">
+        <Button size="lg" variant="outline" className="w-full gap-4 text-white">
           <WalletItem.Icon className="h-5 w-5" />
           <WalletItem.Name className="text-base font-normal" />
         </Button>
