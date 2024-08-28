@@ -43,6 +43,9 @@ export const GET = async (request: NextRequest) => {
           address: user.address,
           totalDeposits: user.totalDeposits,
           depositTimestamp: user.depositTimestamp,
+          rewardsWon: user.rewardsWon,
+          rewardsClaimable: user.rewardsClaimable,
+          wonToday: user.wonToday,
         },
         { status: 200 },
       );

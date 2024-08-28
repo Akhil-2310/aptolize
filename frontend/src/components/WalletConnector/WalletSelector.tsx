@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 
-
 export function WalletSelector() {
   const { account, connected, disconnect, wallet } = useWallet();
   const { toast } = useToast();
@@ -136,15 +135,15 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
               </p>
               <AptosPrivacyPolicy.PoweredBy className="flex gap-1.5 items-center text-xs leading-5 text-muted-foreground " />
             </AptosPrivacyPolicy>
-            {/* <div className="flex items-center gap-3 pt-4 text-muted-foreground">
+            <div className="flex items-center gap-3 pt-4 text-muted-foreground">
               <div className="h-px w-full bg-secondary" />
               Or
               <div className="h-px w-full bg-secondary" />
-            </div> */}
+            </div>
           </div>
         )}
 
-        {/* <div className="flex flex-col gap-3 pt-3">
+        <div className="flex flex-col gap-3 pt-3">
           {availableWallets.map((wallet) => (
             <WalletRow key={wallet.name} wallet={wallet} onConnect={close} />
           ))}
@@ -162,7 +161,7 @@ function ConnectWalletDialog({ close }: ConnectWalletDialogProps) {
               </CollapsibleContent>
             </Collapsible>
           )}
-        </div> */}
+        </div>
       </AboutAptosConnect>
     </DialogContent>
   );

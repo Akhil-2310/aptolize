@@ -6,12 +6,16 @@ import axios from "axios";
 import DepositDialogButton from "@/components/DepositDialog";
 import ClaimRewardsDialog from "@/components/ClaimDeposit";
 import WithdrawDialog from "@/components/WithdrawDialog";
-
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 const DashboardPage = () => {
   // Dummy data for the metrics
+  const { account, connected, disconnect, wallet } = useWallet();
   const [lotteriesWon, setLotteriesWon] = useState(5);
   const [totalDeposited, setTotalDeposited] = useState("$10,000");
   const [lotteryRewards, setLotteryRewards] = useState(50);
+  const [rewardsWon, setRewardsWon] = useState("0");
+  const [rewardsClaimable, setRewardsClaimable] = useState("0");
+  const [totalDeposits, setTotalDeposits] = useState("0");
 
   // useEffect(() => {
   //   async function connect() {
@@ -21,6 +25,29 @@ const DashboardPage = () => {
 
   //   connect();
   // }, []);
+
+  useEffect(() => {
+    if (!account?.address) return;
+
+    async function fetchData() {
+      const response = await axios.get("/api/user", {
+        params: { address: account?.address },
+      });
+
+      if (response.status === 200) {
+        console.log(response);
+        const { totalDeposits, rewardsWon, rewardsClaimable, wonToday } = response.data;
+        setRewardsWon(rewardsWon);
+        setRewardsClaimable(rewardsClaimable);
+        setTotalDeposits(totalDeposits);
+      } else {
+        throw new Error("Failed to fetch user rewards");
+      }
+    }
+
+    fetchData();
+  }, [account]);
+
   const handelCliks = async () => {
     try {
       const res = await axios.post("/api/user", {
@@ -71,8 +98,8 @@ const DashboardPage = () => {
 
         <div className="flex justify-around">
           <DepositDialogButton />
-          <WithdrawDialog totalDeposit="123" />
-          <ClaimRewardsDialog totalClaim="123" />
+          <WithdrawDialog totalDeposit={totalDeposits} />
+          <ClaimRewardsDialog totalClaim={rewardsClaimable} />
 
           {/* <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">Deposit</Button> */}
           {/* <Button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">Withdraw</Button> */}
