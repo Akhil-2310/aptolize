@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import {
+  aptosPriceInUsd,
   cellTokenPrice,
   swapCellToApt,
   swapWUsdcToApt,
@@ -35,14 +36,17 @@ function WithdrawDialog({ totalDeposit }: { totalDeposit: string }) {
       setLoading(true);
       console.log(`Withdrawing ${amount} USDT`);
 
-      const withdrawResponse = await withdraw(account, amount, signTransaction);
+      const withdrawResponse = await withdraw(account, BigInt(amount * 100000), signTransaction);
       console.log("withdrawResponse", withdrawResponse);
 
-      const lpToken = BigInt(0.5 * 100000);
+      // const fromTokenAmount = (aptosAmount / 2).toFixed(4).toString();
+      // const lpToken = BigInt(0.5 * 100000);
+      const lpToken = BigInt(amount * 100000);
       const unstakeResponse = await unstakeWusdcZusdcPair(lpToken);
       console.log("unstakeResponse", unstakeResponse);
 
-      const fromTokenAmount = "0.01";
+      // const fromTokenAmount = "0.01";
+      const fromTokenAmount = ((amount / 2) * 0.9).toString();
       const wUsdcSwapResponse = await swapWUsdcToApt(fromTokenAmount);
       console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
       const zUsdcSwapResponse = await swapZUsdcToApt(fromTokenAmount);
@@ -61,15 +65,17 @@ function WithdrawDialog({ totalDeposit }: { totalDeposit: string }) {
       const duration = 1
       const rewards = totalDepositsTenPercentagePerDay * duration
 
-      const rewardwUsdcSwapResponse = await swapWUsdcToApt(rewards.toString());
-      console.log("rewardwUsdcSwapResponse", rewardwUsdcSwapResponse);
-      totalApt = totalApt + await wUsdcToAptAmount(rewards);
-      console.log("totalApt", totalApt);
+      if (rewards > 0) {
+        const rewardwUsdcSwapResponse = await swapWUsdcToApt(rewards.toString());
+        console.log("rewardwUsdcSwapResponse", rewardwUsdcSwapResponse);
+        totalApt = totalApt + await wUsdcToAptAmount(rewards);
+        console.log("totalApt", totalApt);
+      }
 
       const depositEndPointResponse = await axios.post("/api/deposit", {
         address: account?.address,
-        totalDeposits: 0,
-        depositTimestamp: "0"
+        totalDeposits: depositAmount - amount,
+        depositTimestamp: new Date()
       });
       console.log("depositEndPointResponse", depositEndPointResponse);
       toast({

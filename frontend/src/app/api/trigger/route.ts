@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import mongoose from "mongoose";
 import { Document } from "@/lib/connectDB";
-import { cellTokenPrice, claimRewards, getRewardAmount, pickWinner, swapCellToApt, swapCellToWusdc } from "@/lib/apiRequests";
+import { cellTokenPrice, claimRewards, getLotteryWinner, getRewardAmount, pickWinner, swapCellToApt, swapCellToWusdc } from "@/lib/apiRequests";
 import { AccountAddress, MoveVector, Serializer } from "@aptos-labs/ts-sdk";
 
 const mongoURI = process.env.NEXT_PUBLIC_MONGODB_URI;
@@ -34,18 +34,24 @@ export const POST = async (request: NextRequest) => {
         // const amount = BigInt(Math.round(totalDepositsFivePercentagePerDayInCell * 1e6) * 10 ** 8);
         const lotteryAmount = BigInt(Math.round(totalDepositsFivePercentagePerDay * 1e6));
 
-        const rewardAmount = await getRewardAmount();
+        // const rewardAmount = await getRewardAmount();
+        const rewardAmount = parseInt(await getRewardAmount() as string) / 1e8
         console.log("rewardAmount", rewardAmount)
         const claimRewardResponse = await claimRewards();
         console.log("claimRewardResponse", claimRewardResponse)
 
-        if (rewardAmount) {
-            const swapCellToWusdcResponse = await swapCellToWusdc(rewardAmount as string);
+        if (rewardAmount >= 0.001) {
+            // console.log("rewardAmount", rewardAmount)
+            // const rewardAmountInStr = (parseInt(rewardAmount as string) / 1e8).toString()
+            // const rewardAmountInStr = "0.001"
+            const swapCellToWusdcResponse = await swapCellToWusdc(rewardAmount.toString());
             console.log("swapCellToWusdcResponse", swapCellToWusdcResponse);
-        }
 
-        const pickWinnerResponse = await pickWinner(eligibleUsers, lotteryAmount);
-        console.log("pickWinnerResponse", pickWinnerResponse);
+            const pickWinnerResponse = await pickWinner(eligibleUsers, lotteryAmount);
+            console.log("pickWinnerResponse", pickWinnerResponse);
+
+            console.log("winner", await getLotteryWinner());
+        }
 
         return NextResponse.json({ message: "Winner picked successfully" }, { status: 201 });
     } catch (error) {

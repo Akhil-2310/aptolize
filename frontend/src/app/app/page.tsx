@@ -16,6 +16,7 @@ const DashboardPage = () => {
   const [rewardsWon, setRewardsWon] = useState("0");
   const [rewardsClaimable, setRewardsClaimable] = useState("0");
   const [totalDeposits, setTotalDeposits] = useState("0");
+  const [triggerAPI, setTriggerAPI] = useState(false);
 
   // useEffect(() => {
   //   async function connect() {
@@ -27,8 +28,7 @@ const DashboardPage = () => {
   // }, []);
 
   useEffect(() => {
-
-    if (!account?.address) return;
+    if (!account?.address || !triggerAPI) return;
 
     async function fetchData() {
       const response = await axios.get("/api/user", {
@@ -46,7 +46,7 @@ const DashboardPage = () => {
       }
     }
     fetchData();
-  }, [account]);
+  }, [account, triggerAPI]);
 
   const handelCliks = async () => {
     try {
@@ -97,7 +97,7 @@ const DashboardPage = () => {
         </div>
 
         <div className="flex justify-around">
-          <DepositDialogButton />
+          <DepositDialogButton setTriggerAPI={setTriggerAPI} />
           <WithdrawDialog totalDeposit={totalDeposits} />
           <ClaimRewardsDialog totalClaim={rewardsClaimable} />
 

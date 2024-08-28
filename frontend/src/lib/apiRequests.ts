@@ -72,7 +72,7 @@ export async function panoraSwap(fromTokenAddress, toTokenAddress, fromTokenAmou
 
                 fromTokenAmount: fromTokenAmount,
                 toWalletAddress: toWalletAddress,
-                slippagePercentage: String(1),
+                slippagePercentage: String(5),
             },
             privateKey,
         );
@@ -121,6 +121,29 @@ export async function panoraTokenPrice(tokenAddress) {
     }
 }
 
+export async function aptosPriceInUsd() {
+    return await panoraTokenPriceInUsd(APTOS_COIN);
+}
+
+//@ts-ignore
+export async function panoraTokenPriceInUsd(tokenAddress) {
+    try {
+        const response = await client.ExactInSwapQuote(
+            {
+                "chainId": "1",
+                "fromTokenAddress": tokenAddress,
+                "toTokenAddress": wUSDC_TOKEN,
+                "fromTokenAmount": "1",
+            },
+        );
+        const tokenPriceInUsd = parseFloat(response.quotes[0].toTokenAmountUSD)
+        return tokenPriceInUsd;
+    } catch (error) {
+        console.error("Error while checking quote:", error);
+        throw error;
+    }
+}
+
 //@ts-ignore
 export async function panoraAptosAmount(tokenAddress, amount) {
     try {
@@ -156,7 +179,7 @@ export async function stakeWusdcZusdcPair(wUsdcAmount, zUsdcAmount) {
         signer: admin,
         transaction: transaction,
     });
-    const response = await aptos_mainnet.waitForTransaction({ transactionHash: committedTxn.hash });
+    const response = await aptos_mainnet.waitForTransaction({ transactionHash: committedTxn.hash, options: { checkSuccess: true } });
     return response;
 }
 
@@ -175,7 +198,7 @@ export async function unstakeWusdcZusdcPair(lpToken) {
         signer: admin,
         transaction: transaction,
     });
-    const response = await aptos_mainnet.waitForTransaction({ transactionHash: committedTxn.hash });
+    const response = await aptos_mainnet.waitForTransaction({ transactionHash: committedTxn.hash, options: { checkSuccess: true } });
     return response;
 }
 
@@ -194,7 +217,7 @@ export async function claimRewards() {
         signer: admin,
         transaction: transaction,
     });
-    const response = await aptos_mainnet.waitForTransaction({ transactionHash: committedTxn.hash });
+    const response = await aptos_mainnet.waitForTransaction({ transactionHash: committedTxn.hash, options: { checkSuccess: true } });
     return response;
 }
 
@@ -351,3 +374,14 @@ export async function getLotteryAmount() {
 
     return amount?.toString()
 }
+
+export async function getLotteryWinner() {
+    const payload: InputViewFunctionData = {
+        function: `${aptolizeAddress}::aptolize::lottery_winner`,
+    };
+
+    const address = (await aptos_devnet.view({ payload }))[0];
+
+    return address?.toString()
+}
+

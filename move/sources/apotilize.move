@@ -149,6 +149,13 @@ module aptolize_addr::aptolize {
     }
 
     #[view]
+    public fun lottery_winner(): address
+    acquires AdminData {
+        assert!(exists<AdminData>(@aptolize_addr), error::not_found(ENO_MESSAGE));
+        borrow_global<AdminData>(@aptolize_addr).winner
+    }
+
+    #[view]
     public fun lottery(): u64
     acquires AdminData {
         assert!(exists<AdminData>(@aptolize_addr), error::not_found(ENO_MESSAGE));

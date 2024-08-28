@@ -17,13 +17,13 @@ function ClaimRewardsDialog({ totalClaim }: { totalClaim: string }) {
       // Handle the reward claim logic here
       console.log(`Claiming ${totalClaim} USDT`);
 
+      const lotteryAmountInUsd = await getLotteryAmount();
+      console.log("lotteryAmountInUsd", lotteryAmountInUsd)
+
       const claimResponse = await claimLottery(account, signTransaction);
       console.log("claimResponse", claimResponse);
 
-      const lotteryAmountInUsd = await getLotteryAmount() as string;
-      console.log("lotteryAmountInUsd", lotteryAmountInUsd)
-
-      const wUsdcSwapResponse = await swapWUsdcToApt(lotteryAmountInUsd);
+      const wUsdcSwapResponse = await swapWUsdcToApt(lotteryAmountInUsd as string);
       console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
 
       toast({
