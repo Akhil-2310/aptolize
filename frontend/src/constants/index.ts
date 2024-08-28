@@ -19,36 +19,36 @@ export const perks = [
 ];
 
 export const features = [
-    {
-        icon: Icons.bolt,
-        title: "Fast Setup",
-        info: "Get your website up and running in minutes with our intuitive AI-powered builder.",
-    },
-    {
-        icon: Icons.palette,
-        title: "Customizable Templates",
-        info: "Choose from a variety of stunning templates and customize them to suit your brand.",
-    },
-    {
-        icon: Icons.seo,
-        title: "SEO Optimized",
-        info: "Built-in SEO features ensure your website ranks well on search engines.",
-    },
-    {
-        icon: Icons.monitor,
-        title: "Responsive Design",
-        info: "Your website will look great on any device, from desktops to mobile phones.",
-    },
-    {
-        icon: Icons.shop,
-        title: "E-Commerce Ready",
-        info: "Start selling online with our e-commerce features and integrations.",
-    },
-    {
-        icon: Icons.server,
-        title: "Secure Hosting",
-        info: "Enjoy peace of mind with secure and reliable hosting for your website.",
-    },
+  {
+    icon: Icons.bolt,
+    title: "Maximize Your Earnings",
+    info: "Deposit fiat and get a fixed interest of 10%.",
+  },
+  {
+    icon: Icons.palette,
+    title: "Daily Reward Management",
+    info: "Enjoy daily rewards when luck favors you.",
+  },
+  {
+    icon: Icons.seo,
+    title: "Win Big Every Day",
+    info: "Participate in our daily lotteries, where the longer you deposit, the higher your chances of winning additional rewards.",
+  },
+  {
+    icon: Icons.monitor,
+    title: "Only One Click",
+    info: "Just Click once and rest will be taken care.",
+  },
+  {
+    icon: Icons.shop,
+    title: "E-Commerce Ready",
+    info: "Start selling online with our e-commerce features and integrations.",
+  },
+  {
+    icon: Icons.server,
+    title: "Secure Hosting",
+    info: "Enjoy peace of mind with secure and reliable hosting for your website.",
+  },
 ];
 
 export const pricingCards = [
