@@ -2,7 +2,7 @@
 import React from 'react'
 import { Box, Flex, Heading, Text, Divider, Input, Button, useColorModeValue, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator } from '@chakra-ui/react';
 import { useState } from 'react';
-import { deposit, getQuotePrice, stakeWusdcZusdcPair, swapAptToWUsdc, swapAptToZUsdc } from "@/lib/apiRequests";
+import { aptosPriceInUsd, deposit, getQuotePrice, stakeWusdcZusdcPair, swapAptToWUsdc, swapAptToZUsdc } from "@/lib/apiRequests";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
@@ -30,24 +30,28 @@ const page = () => {
     try {
       setLoading(true);
 
-      console.log(`Depositing ${amount} USDT`);
-
+      console.log(`Depositing ${amount} USD`);
+      const aptosAmount = amount / await aptosPriceInUsd();
+      console.log(`Depositing ${aptosAmount} APTOS`);
       setActiveStep(1);
-      const fromTokenAmount = "0.001";
+
+      // const fromTokenAmount = "0.001";
+      const fromTokenAmount = (aptosAmount / 2).toFixed(4).toString();
       const wUsdcSwapResponse = await swapAptToWUsdc(fromTokenAmount);
       console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
       const zUsdcSwapResponse = await swapAptToZUsdc(fromTokenAmount);
       console.log("zUsdcSwapResponse", zUsdcSwapResponse);
-
       setActiveStep(2);
-      const wUSDC = BigInt(0.9 * 100000);
+
+      // const wUSDC = BigInt(0.9 * 100000);
+      const wUSDC = BigInt(amount / 2 * 0.95 * 100000);
       const zUSDC = await getQuotePrice(wUSDC);
       const stakeResponse = await stakeWusdcZusdcPair(wUSDC, zUSDC);
       console.log("stakeResponse", stakeResponse);
-
-      const depositReponse = await deposit(account, amount, signTransaction);
-      console.log("depositReponse", depositReponse);
       setActiveStep(3);
+
+      const depositReponse = await deposit(account, BigInt(amount * 100000), signTransaction);
+      console.log("depositReponse", depositReponse);
 
       const userEndPointResponse = await axios.get("/api/user?address=" + account?.address);
       console.log("userEndPointResponse", userEndPointResponse);
@@ -60,7 +64,6 @@ const page = () => {
       });
       console.log("depositEndPointResponse", depositEndPointResponse);
       setActiveStep(4);
-
       setAmount(0);
 
       toast({
@@ -68,6 +71,8 @@ const page = () => {
         title: "Success!",
         description: "Your Funds are deposited successfully",
       });
+      setLoading(false);
+      setOpen(false);
     } catch (ex: any) {
       toast({
         variant: "destructive",
