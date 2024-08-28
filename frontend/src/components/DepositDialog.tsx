@@ -14,8 +14,11 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import axios from "axios";
 import { toast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
+interface Props {
+  setTriggerAPI: (value: boolean) => void;
+}
 
-const DepositDialogButton = () => {
+const DepositDialogButton = ({ setTriggerAPI }: Props) => {
   const { account, signTransaction } = useWallet();
   const [amount, setAmount] = useState(0);
   const [open, setOpen] = useState(false);
@@ -59,6 +62,9 @@ const DepositDialogButton = () => {
         title: "Success!",
         description: "Your Funds are deposited successfully",
       });
+      setLoading(false);
+      setOpen(false);
+      setTriggerAPI(true);
     } catch (ex: any) {
       toast({
         variant: "destructive",
