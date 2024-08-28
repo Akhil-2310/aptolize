@@ -2,37 +2,39 @@ import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { InputViewFunctionData } from "@aptos-labs/ts-sdk";
-import { getLotteryAmount, swapWUsdcToApt } from "@/lib/apiRequests";
+import { claimLottery, claimRewards, getLotteryAmount, swapWUsdcToApt } from "@/lib/apiRequests";
 import { ToastAction } from "./ui/toast";
 import { toast } from "./ui/use-toast";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 function ClaimRewardsDialog({ totalClaim }: { totalClaim: string }) {
+  const { account, signTransaction } = useWallet();
+
   const [isClaimed, setIsClaimed] = useState(false);
 
   const handleConfirm = async () => {
-    try{
-        // Handle the reward claim logic here
-        console.log(`Claiming ${totalClaim} USDT`);
+    try {
+      // Handle the reward claim logic here
+      console.log(`Claiming ${totalClaim} USDT`);
 
-        const lotteryAmountInUsd = await getLotteryAmount() as string;
-        console.log("lotteryAmountInUsd", lotteryAmountInUsd)
+      const claimResponse = await claimLottery(account, signTransaction);
+      console.log("claimResponse", claimResponse);
 
-        const wUsdcSwapResponse = await swapWUsdcToApt(lotteryAmountInUsd);
-        console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
-        
-        toast({
-          variant: "default",
-          title: "Sucess!",
-          description: "your funds are claimed successfully",
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
-        });
+      const lotteryAmountInUsd = await getLotteryAmount() as string;
+      console.log("lotteryAmountInUsd", lotteryAmountInUsd)
 
-        // TODO: Offramp APT
-        setIsClaimed(true);
+      const wUsdcSwapResponse = await swapWUsdcToApt(lotteryAmountInUsd);
+      console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
 
+      toast({
+        variant: "default",
+        title: "Sucess!",
+        description: "Lottery rewards are claimed successfully",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+      setIsClaimed(true);
     }
-    catch(ex: any)
-    {
+    catch (ex: any) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
@@ -41,7 +43,7 @@ function ClaimRewardsDialog({ totalClaim }: { totalClaim: string }) {
       });
       console.log("there was an error", ex.message);
     }
-     // Update state to indicate that the reward has been claimed
+    // Update state to indicate that the reward has been claimed
   };
 
   return (

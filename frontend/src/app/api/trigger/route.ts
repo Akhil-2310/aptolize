@@ -12,7 +12,6 @@ if (!mongoURI) {
 mongoose.connect(mongoURI).then(() => console.log("Connected! to db"));
 
 export const POST = async (request: NextRequest) => {
-    console.log("trigger POST request received");
     try {
         const existingUsers = await Document.find({});
         if (!existingUsers) {
@@ -28,11 +27,12 @@ export const POST = async (request: NextRequest) => {
                 return sum + item.totalDeposits;
             }, 0);
 
-        const cellTokenPriceInUsd = await cellTokenPrice();
+        // const cellTokenPriceInUsd = await cellTokenPrice();
         const totalDepositsFivePercentage = totalDeposits * 0.05;
         const totalDepositsFivePercentagePerDay = totalDepositsFivePercentage / 365;
-        const totalDepositsFivePercentagePerDayInCell = totalDepositsFivePercentagePerDay / cellTokenPriceInUsd
-        const amount = BigInt(Math.round(totalDepositsFivePercentagePerDayInCell * 1e6) * 10 ** 8);
+        // const totalDepositsFivePercentagePerDayInCell = totalDepositsFivePercentagePerDay / cellTokenPriceInUsd
+        // const amount = BigInt(Math.round(totalDepositsFivePercentagePerDayInCell * 1e6) * 10 ** 8);
+        const lotteryAmount = BigInt(Math.round(totalDepositsFivePercentagePerDay * 1e6));
 
         const rewardAmount = await getRewardAmount();
         console.log("rewardAmount", rewardAmount)
@@ -44,9 +44,7 @@ export const POST = async (request: NextRequest) => {
             console.log("swapCellToWusdcResponse", swapCellToWusdcResponse);
         }
 
-        // const swapCellToAptResponse = await swapCellToApt("0.01");
-        // console.log("swapCellToAptResponse", swapCellToAptResponse);
-        const pickWinnerResponse = await pickWinner(eligibleUsers, amount);
+        const pickWinnerResponse = await pickWinner(eligibleUsers, lotteryAmount);
         console.log("pickWinnerResponse", pickWinnerResponse);
 
         return NextResponse.json({ message: "Winner picked successfully" }, { status: 201 });

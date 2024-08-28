@@ -314,6 +314,34 @@ export async function pickWinner(users, amount) {
     return response
 }
 
+//@ts-ignore
+export async function claimLottery(user, signTransaction) {
+    const transaction = await aptos_devnet.transaction.build.multiAgent({
+        sender: admin.accountAddress,
+        secondarySignerAddresses: [user.address],
+        data: {
+            function: `${aptolizeAddress}::aptolize::claim`,
+            functionArguments: [],
+        },
+    });
+
+    const adminSenderAuthenticator = aptos_devnet.transaction.sign({
+        signer: admin,
+        transaction: transaction,
+    });
+
+    const userSenderAuthenticator = await signTransaction(transaction, false);
+
+    const committedTxn = await aptos_devnet.transaction.submit.multiAgent({
+        transaction,
+        senderAuthenticator: adminSenderAuthenticator,
+        additionalSignersAuthenticators: [userSenderAuthenticator],
+    });
+
+    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash });
+    return response;
+}
+
 export async function getLotteryAmount() {
     const payload: InputViewFunctionData = {
         function: `${aptolizeAddress}::aptolize::lottery`,
