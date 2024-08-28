@@ -5,40 +5,59 @@ import { Input } from "@/components/ui/input";
 import { deposit, stakeWusdcZusdcPair, swapAptToWUsdc, swapAptToZUsdc } from "@/lib/apiRequests";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import axios from "axios";
+import { toast } from "./ui/use-toast";
+import { ToastAction } from "./ui/toast";
 
 const DepositDialogButton = () => {
   const { account, signTransaction } = useWallet();
   const [amount, setAmount] = useState(0);
 
   const handleConfirm = async () => {
-    console.log(`Depositing ${amount} USDT`);
+    try{
+      console.log(`Depositing ${amount} USDT`);
 
-    const fromTokenAmount = "0.001";
-    const wUsdcSwapResponse = await swapAptToWUsdc(fromTokenAmount);
-    console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
-    const zUsdcSwapResponse = await swapAptToZUsdc(fromTokenAmount);
-    console.log("zUsdcSwapResponse", zUsdcSwapResponse);
-
-    const wUSDC = BigInt(0.9 * 100000);
-    const zUSDC = BigInt(1 * 100000);
-    const stakeResponse = await stakeWusdcZusdcPair(wUSDC, zUSDC);
-    console.log("stakeResponse", stakeResponse);
-
-    const depositReponse = await deposit(account, amount, signTransaction);
-    console.log("depositReponse", depositReponse);
-
-    const userEndPointResponse = await axios.get("/api/user?address=" + account?.address);
-    const depositAmount = userEndPointResponse.data.totalDeposits
-    console.log("depositAmount", depositAmount);
-
-    const depositEndPointResponse = await axios.post("/api/deposit", {
-      address: account?.address,
-      totalDeposits: depositAmount + amount,
-      depositTimestamp: new Date()
-    });
-    console.log("depositEndPointResponse", depositEndPointResponse);
-
-    setAmount(0);
+      const fromTokenAmount = "0.001";
+      const wUsdcSwapResponse = await swapAptToWUsdc(fromTokenAmount);
+      console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
+      const zUsdcSwapResponse = await swapAptToZUsdc(fromTokenAmount);
+      console.log("zUsdcSwapResponse", zUsdcSwapResponse);
+  
+      const wUSDC = BigInt(0.9 * 100000);
+      const zUSDC = BigInt(1 * 100000);
+      const stakeResponse = await stakeWusdcZusdcPair(wUSDC, zUSDC);
+      console.log("stakeResponse", stakeResponse);
+  
+      const depositReponse = await deposit(account, amount, signTransaction);
+      console.log("depositReponse", depositReponse);
+  
+      const userEndPointResponse = await axios.get("/api/user?address=" + account?.address);
+      const depositAmount = userEndPointResponse.data.totalDeposits
+      console.log("depositAmount", depositAmount);
+  
+      const depositEndPointResponse = await axios.post("/api/deposit", {
+        address: account?.address,
+        totalDeposits: depositAmount + amount,
+        depositTimestamp: new Date()
+      });
+      console.log("depositEndPointResponse", depositEndPointResponse);
+  
+      setAmount(0);
+      toast({
+        variant: "destructive",
+        title: "Success!",
+        description: "Your Funds are claimed successfully",
+      });
+    }
+    catch(ex: any)
+    {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: ex.message,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+      console.log("there was an error", ex.message);
+    }
   };
 
   return (
