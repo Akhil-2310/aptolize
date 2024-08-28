@@ -34,18 +34,23 @@ export const POST = async (request: NextRequest) => {
         // const amount = BigInt(Math.round(totalDepositsFivePercentagePerDayInCell * 1e6) * 10 ** 8);
         const lotteryAmount = BigInt(Math.round(totalDepositsFivePercentagePerDay * 1e6));
 
-        const rewardAmount = await getRewardAmount();
+        // const rewardAmount = await getRewardAmount();
+        const rewardAmount = parseInt(await getRewardAmount() as string) / 1e8
         console.log("rewardAmount", rewardAmount)
         const claimRewardResponse = await claimRewards();
         console.log("claimRewardResponse", claimRewardResponse)
 
-        if (rewardAmount) {
-            const swapCellToWusdcResponse = await swapCellToWusdc(rewardAmount as string);
-            console.log("swapCellToWusdcResponse", swapCellToWusdcResponse);
-        }
 
-        const pickWinnerResponse = await pickWinner(eligibleUsers, lotteryAmount);
-        console.log("pickWinnerResponse", pickWinnerResponse);
+        if (rewardAmount >= 0.001) {
+            // console.log("rewardAmount", rewardAmount)
+            // const rewardAmountInStr = (parseInt(rewardAmount as string) / 1e8).toString()
+            // const rewardAmountInStr = "0.001"
+            const swapCellToWusdcResponse = await swapCellToWusdc(rewardAmount.toString());
+            console.log("swapCellToWusdcResponse", swapCellToWusdcResponse);
+
+            const pickWinnerResponse = await pickWinner(eligibleUsers, lotteryAmount);
+            console.log("pickWinnerResponse", pickWinnerResponse);
+        }
 
         return NextResponse.json({ message: "Winner picked successfully" }, { status: 201 });
     } catch (error) {
