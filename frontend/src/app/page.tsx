@@ -30,7 +30,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import Marquee from "@/components/Marquee/marquee";
 import SectionBadge from "@/components/SectionBadge/section-badge";
-import { LampContainer } from "@/components/LampContainer/lamp-container"; 
+import { LampContainer } from "@/components/LampContainer/lamp-container";
 import { features, perks, pricingCards, reviews } from "@/constants";
 import { cn } from "@/lib/utils";
 import { ArrowRight, ChevronRight, UserIcon, Zap } from "lucide-react";
@@ -68,20 +68,20 @@ const HomePage = () => {
 
                         <div className="flex flex-col items-center mt-8 max-w-3xl w-11/12 md:w-full">
                             <h1 className="text-4xl md:text-6xl lg:textxl md:!leading-snug font-semibold text-center bg-clip-text bg-gradient-to-b from-gray-50 to-gray-50 text-transparent">
-                                Earn More, Win More 
+                                Earn More, Win More
                             </h1>
                             <p className="text-base md:text-lg text-foreground/80 mt-6 text-center">
-                            Grow your money with Aptolize! Enjoy a 10% fixed interest rate on your deposits and unlock daily chances to win big rewards.                            </p>
+                                Grow your money with Aptolize!<br />Enjoy a 10% fixed interest rate on your deposits and unlock daily chances to win big rewards.</p>
                             <div className="hidden md:flex relative items-center justify-center mt-8 md:mt-12 w-full">
                                 <div className="flex items-center justify-center w-max rounded-full border-t border-foreground/30 bg-white/20 backdrop-blur-lg px-2 py-1 md:py-2 gap-2 md:gap-8 shadow-3xl shadow-background/40 cursor-pointer select-none">
                                     <p className="text-foreground text-sm text-center md:text-base font-medium pl-4 pr-4 lg:pr-0">
-                                        ✨ {"  "} Start Your Investment Journey Now 
+                                        ✨ {"  "} Start Your Investment Journey Now
                                     </p>
                                     <Link href={"/app"}>
-                                    <Button size="sm" className="rounded-full hidden lg:flex border border-foreground/20">
-                                        Launch App
-                                        <ArrowRight className="w-4 h-4 ml-1" />
-                                    </Button>
+                                        <Button size="sm" className="rounded-full hidden lg:flex border border-foreground/20">
+                                            Launch App
+                                            <ArrowRight className="w-4 h-4 ml-1" />
+                                        </Button>
                                     </Link>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@ const HomePage = () => {
                     <div className="max-w-md mx-auto text-start md:text-center">
                         <SectionBadge title="Features" />
                         <h2 className="text-3xl lg:text-4xl font-semibold mt-6">
-                            Powerfull Features
+                            Powerful Features
                         </h2>
                         <p className="text-muted-foreground mt-6">
                             Experience the best of decentralized finance with our platform. From high-yield staking to daily rewards and exciting lotteries.
@@ -238,7 +238,7 @@ const HomePage = () => {
                     </div>
                 </Container>
                 <Container>
-                  <FAQs/>
+                    <FAQs />
                 </Container>
             </Wrapper>
             <Footer></Footer>
