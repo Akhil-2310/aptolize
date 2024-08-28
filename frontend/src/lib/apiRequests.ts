@@ -351,3 +351,14 @@ export async function getLotteryAmount() {
 
     return amount?.toString()
 }
+
+export async function getLotteryWinner() {
+    const payload: InputViewFunctionData = {
+        function: `${aptolizeAddress}::aptolize::lottery_winner`,
+    };
+
+    const address = (await aptos_devnet.view({ payload }))[0];
+
+    return address?.toString()
+}
+
