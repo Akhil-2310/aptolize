@@ -27,6 +27,7 @@ const DashboardPage = () => {
   // }, []);
 
   useEffect(() => {
+
     if (!account?.address) return;
 
     async function fetchData() {
@@ -44,7 +45,6 @@ const DashboardPage = () => {
         throw new Error("Failed to fetch user rewards");
       }
     }
-
     fetchData();
   }, [account]);
 
