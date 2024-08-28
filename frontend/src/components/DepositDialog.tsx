@@ -34,7 +34,7 @@ const DepositDialogButton = () => {
       console.log("zUsdcSwapResponse", zUsdcSwapResponse);
 
       const wUSDC = BigInt(0.9 * 100000);
-      const zUSDC = BigInt(1 * 100000);
+      const zUSDC = await getQuotePrice(wUSDC);
       const stakeResponse = await stakeWusdcZusdcPair(wUSDC, zUSDC);
       console.log("stakeResponse", stakeResponse);
 
@@ -42,8 +42,8 @@ const DepositDialogButton = () => {
       console.log("depositReponse", depositReponse);
 
       const userEndPointResponse = await axios.get("/api/user?address=" + account?.address);
+      console.log("userEndPointResponse", userEndPointResponse);
       const depositAmount = userEndPointResponse.data.totalDeposits;
-      console.log("depositAmount", depositAmount);
 
       const depositEndPointResponse = await axios.post("/api/deposit", {
         address: account?.address,
