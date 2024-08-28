@@ -86,3 +86,51 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 };
+
+export const PUT = async (request: NextRequest) => {
+  try {
+    const body = await request.json();
+    const { address, rewardsWon, rewardsClaimable, wonToday } = body;
+
+    if (!address) {
+      return NextResponse.json({ error: "Address is required" }, { status: 400 });
+    }
+
+    // Find the user by address
+    const user = await Document.findOne({ address });
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Update the fields if they are provided
+    if (rewardsWon !== undefined) {
+      user.rewardsWon = rewardsWon;
+    }
+    if (rewardsClaimable !== undefined) {
+      user.rewardsClaimable = rewardsClaimable;
+    }
+    if (wonToday !== undefined) {
+      user.wonToday = wonToday;
+    }
+
+    // Save the updated user
+    await user.save();
+
+    return NextResponse.json(
+      {
+        message: "User rewards information updated successfully",
+        user: {
+          address: user.address,
+          rewardsWon: user.rewardsWon,
+          rewardsClaimable: user.rewardsClaimable,
+          wonToday: user.wonToday,
+        },
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error in PUT:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+};

@@ -2,7 +2,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { cellTokenPrice, swapCellToApt, swapWUsdcToApt, swapZUsdcToApt, unstakeWusdcZusdcPair, withdraw } from "@/lib/apiRequests";
+import { cellToAptAmount, cellTokenPrice, panoraAptosAmount, swapCellToApt, swapWUsdcToApt, swapZUsdcToApt, unstakeWusdcZusdcPair, withdraw, wUsdcToAptAmount, zUsdcToAptAmount } from "@/lib/apiRequests";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import axios from "axios";
 import { toast } from "./ui/use-toast";
@@ -10,55 +10,68 @@ import { ToastAction } from "./ui/toast";
 
 function WithdrawDialog({ totalDeposit }: { totalDeposit: string }) {
   const { account, signTransaction } = useWallet();
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(100);
 
   const handleConfirm = async () => {
-    try{
+    try {
       console.log(`Withdrawing ${amount} USDT`);
+
+      const withdrawResponse = await withdraw(account, amount, signTransaction);
+      console.log("withdrawResponse", withdrawResponse);
 
       const lpToken = BigInt(0.5 * 100000);
       const unstakeResponse = await unstakeWusdcZusdcPair(lpToken);
       console.log("unstakeResponse", unstakeResponse);
-  
-      const fromTokenAmount = "0.01";
+
+      const fromTokenAmount = "0.001";
       const wUsdcSwapResponse = await swapWUsdcToApt(fromTokenAmount);
       console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
       const zUsdcSwapResponse = await swapZUsdcToApt(fromTokenAmount);
       console.log("zUsdcSwapResponse", zUsdcSwapResponse);
-  
+
+      let totalApt = 0
+      totalApt = totalApt + await wUsdcToAptAmount(fromTokenAmount);
+      totalApt = totalApt + await zUsdcToAptAmount(fromTokenAmount);
+
       const userEndPointResponse = await axios.get("/api/user?address=" + account?.address);
+      console.log("userEndPointResponse", userEndPointResponse);
       const depositAmount = userEndPointResponse.data.totalDeposits
-      console.log("depositAmount", depositAmount);
-  
-      const cellTokenPriceInUsd = await cellTokenPrice();
+
       const totalDepositsTenPercentage = depositAmount * 0.1;
       const totalDepositsTenPercentagePerDay = totalDepositsTenPercentage / 365;
-      const totalDepositsTenPercentagePerDayInCell = totalDepositsTenPercentagePerDay / cellTokenPriceInUsd
-      const cellAmount = BigInt(Math.round(totalDepositsTenPercentagePerDayInCell * 1e6) * 10 ** 8);
-  
+      const duration = 1
+      // const duration = userEndPointResponse.data.depositTimestamp - new Date()
+      const rewards = totalDepositsTenPercentagePerDay * duration
+
+      // const totalDepositsTenPercentagePerDayInCell = totalDepositsTenPercentagePerDay / cellTokenPriceInUsd
+      // const cellAmount = BigInt(Math.round(totalDepositsTenPercentagePerDayInCell * 1e6) * 10 ** 8);
       // TODO: Claim the reward from cellana finance
-  
-      const swapCellToAptResponse = await swapCellToApt("0.01");
-      console.log("swapCellToAptResponse", swapCellToAptResponse);
-  
-      const withdrawResponse = await withdraw(account, amount, signTransaction);
-      console.log("withdrawResponse", withdrawResponse);
-  
+      const rewardwUsdcSwapResponse = await swapWUsdcToApt(rewards.toString());
+      console.log("rewardwUsdcSwapResponse", rewardwUsdcSwapResponse);
+      totalApt = totalApt + await wUsdcToAptAmount(rewards);
+
+      // const cellRewards = "0.01";
+      // const swapCellToAptResponse = await swapCellToApt(cellRewards);
+      // console.log("swapCellToAptResponse", swapCellToAptResponse);
+
+      // totalApt = totalApt + await cellToAptAmount(cellRewards);
+      console.log("totalApt", totalApt);
+
       const depositEndPointResponse = await axios.post("/api/deposit", {
         address: account?.address,
-        totalDeposits: depositAmount - amount,
-        depositTimestamp: new Date()
+        totalDeposits: 0,
+        depositTimestamp: "0"
       });
       console.log("depositEndPointResponse", depositEndPointResponse);
+
       toast({
         variant: "default",
         title: "Success!",
-        description: "Your Funds withdrawed successfully",
+        description: "Your Funds withdrawn successfully",
       });
     }
     // Handle the withdrawal logic here
-    catch(ex: any)
-    {
+    catch (ex: any) {
       console.log("There is an Error", ex.message);
       toast({
         variant: "destructive",

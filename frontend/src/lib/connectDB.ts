@@ -33,6 +33,9 @@ const documentSchema = new Schema({
   address: { type: String },
   totalDeposits: { type: Number, default: 0 },
   depositTimestamp: { type: String, default: "0" },
+  rewardsWon: { type: Number, default: 0 },
+  rewardsClaimable: { type: Number, default: 0 },
+  wonToday: { type: Boolean, default: false },
 });
 
 const Document = models.User ?? model("User", documentSchema);
