@@ -8,7 +8,7 @@ export const Footer = () => {
     <footer className="py-5 bg-black text-white/60">
       <div className="container border-t border-white/10 py-5">
         <div className="flex flex-col gap-2">
-          <div className="text-center ">© 2024 Aptolize, Inc. All rights reserved</div>
+          <div className="text-center ">© 2024 Aptolize, Built at AptosSummerSchool@BitsGoa</div>
           <ul className="flex justify-center gap-2.5">
             <li><InstaIcon /></li>
             <li><XSocial /></li>
