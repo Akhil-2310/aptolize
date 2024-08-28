@@ -72,8 +72,6 @@ function WithdrawDialog({ totalDeposit }: { totalDeposit: string }) {
         depositTimestamp: "0"
       });
       console.log("depositEndPointResponse", depositEndPointResponse);
-      setLoading(false);
-      setOpen(false);
       toast({
         variant: "default",
         title: "Success!",
@@ -89,6 +87,8 @@ function WithdrawDialog({ totalDeposit }: { totalDeposit: string }) {
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
+    setLoading(false);
+    setOpen(false);
   };
 
   return (

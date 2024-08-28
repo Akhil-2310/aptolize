@@ -59,8 +59,6 @@ const DepositDialogButton = () => {
         title: "Success!",
         description: "Your Funds are deposited successfully",
       });
-      setLoading(false);
-      setOpen(false);
     } catch (ex: any) {
       toast({
         variant: "destructive",
@@ -70,6 +68,8 @@ const DepositDialogButton = () => {
       });
       console.log("there was an error", ex);
     }
+    setLoading(false);
+    setOpen(false);
   };
 
   return (
