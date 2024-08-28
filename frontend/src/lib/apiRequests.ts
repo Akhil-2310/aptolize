@@ -286,7 +286,7 @@ export async function deposit(user, amount, signTransaction) {
         additionalSignersAuthenticators: [userSenderAuthenticator],
     });
 
-    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash, options: { checkSuccess: true } });
+    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash });
     return response;
 }
 
@@ -314,7 +314,7 @@ export async function withdraw(user, amount, signTransaction) {
         additionalSignersAuthenticators: [userSenderAuthenticator],
     });
 
-    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash, options: { checkSuccess: true } });
+    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash });
     return response;
 }
 
@@ -333,7 +333,7 @@ export async function pickWinner(users, amount) {
             signer: admin,
             transaction: transaction
         });
-    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash, options: { checkSuccess: true } });
+    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash });
     return response
 }
 
@@ -361,7 +361,7 @@ export async function claimLottery(user, signTransaction) {
         additionalSignersAuthenticators: [userSenderAuthenticator],
     });
 
-    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash, options: { checkSuccess: true } });
+    const response = await aptos_devnet.waitForTransaction({ transactionHash: committedTxn.hash });
     return response;
 }
 
