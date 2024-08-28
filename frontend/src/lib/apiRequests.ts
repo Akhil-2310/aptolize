@@ -72,7 +72,7 @@ export async function panoraSwap(fromTokenAddress, toTokenAddress, fromTokenAmou
 
                 fromTokenAmount: fromTokenAmount,
                 toWalletAddress: toWalletAddress,
-                slippagePercentage: String(1),
+                slippagePercentage: String(5),
             },
             privateKey,
         );
@@ -110,6 +110,29 @@ export async function panoraTokenPrice(tokenAddress) {
                 "chainId": "1",
                 "fromTokenAddress": tokenAddress,
                 "toTokenAddress": APTOS_COIN,
+                "fromTokenAmount": "1",
+            },
+        );
+        const tokenPriceInUsd = parseFloat(response.quotes[0].toTokenAmountUSD)
+        return tokenPriceInUsd;
+    } catch (error) {
+        console.error("Error while checking quote:", error);
+        throw error;
+    }
+}
+
+export async function aptosPriceInUsd() {
+    return await panoraTokenPriceInUsd(APTOS_COIN);
+}
+
+//@ts-ignore
+export async function panoraTokenPriceInUsd(tokenAddress) {
+    try {
+        const response = await client.ExactInSwapQuote(
+            {
+                "chainId": "1",
+                "fromTokenAddress": tokenAddress,
+                "toTokenAddress": wUSDC_TOKEN,
                 "fromTokenAmount": "1",
             },
         );

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { deposit, getQuotePrice, stakeWusdcZusdcPair, swapAptToWUsdc, swapAptToZUsdc } from "@/lib/apiRequests";
+import { aptosPriceInUsd, deposit, getQuotePrice, stakeWusdcZusdcPair, swapAptToWUsdc, swapAptToZUsdc } from "@/lib/apiRequests";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import axios from "axios";
 import { toast } from "./ui/use-toast";
@@ -28,20 +28,24 @@ const DepositDialogButton = ({ setTriggerAPI }: Props) => {
     try {
       setLoading(true);
 
-      console.log(`Depositing ${amount} USDT`);
+      console.log(`Depositing ${amount} USD`);
+      const aptosAmount = amount / await aptosPriceInUsd();
+      console.log(`Depositing ${aptosAmount} APTOS`);
 
-      const fromTokenAmount = "0.001";
+      // const fromTokenAmount = "0.001";
+      const fromTokenAmount = (aptosAmount / 2).toFixed(4).toString();
       const wUsdcSwapResponse = await swapAptToWUsdc(fromTokenAmount);
       console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
       const zUsdcSwapResponse = await swapAptToZUsdc(fromTokenAmount);
       console.log("zUsdcSwapResponse", zUsdcSwapResponse);
 
-      const wUSDC = BigInt(0.9 * 100000);
+      // const wUSDC = BigInt(0.9 * 100000);
+      const wUSDC = BigInt(amount / 2 * 0.95 * 100000);
       const zUSDC = await getQuotePrice(wUSDC);
       const stakeResponse = await stakeWusdcZusdcPair(wUSDC, zUSDC);
       console.log("stakeResponse", stakeResponse);
 
-      const depositReponse = await deposit(account, amount, signTransaction);
+      const depositReponse = await deposit(account, BigInt(amount * 100000), signTransaction);
       console.log("depositReponse", depositReponse);
 
       const userEndPointResponse = await axios.get("/api/user?address=" + account?.address);
