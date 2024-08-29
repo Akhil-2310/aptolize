@@ -36,6 +36,19 @@ const documentSchema = new Schema({
   rewardsWon: { type: Number, default: 0 },
   rewardsClaimable: { type: Number, default: 0 },
   wonToday: { type: Boolean, default: false },
+  cardScratched: {type: Boolean, default: false},
+  lastResetDate: { type: Date, default: Date.now }
+});
+
+documentSchema.index({ lastResetDate: 1 }, { expireAfterSeconds: 86400 });
+
+documentSchema.pre('save', function(next) {
+  const now = new Date();
+  if (this.lastResetDate && now.getDate() !== this.lastResetDate.getDate()) {
+    this.cardScratched = false;
+    this.lastResetDate = now;
+  }
+  next();
 });
 
 const Document = models.User ?? model("User", documentSchema);

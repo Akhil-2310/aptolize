@@ -99,8 +99,7 @@ export const POST = async (request: NextRequest) => {
 export const PUT = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    const { address, rewardsWon, rewardsClaimable, wonToday } = body;
-
+    const { address, rewardsWon, rewardsClaimable, wonToday, cardScratched } = body.params;
     if (!address) {
       return NextResponse.json({ error: "Address is required" }, { status: 400 });
     }
@@ -123,9 +122,14 @@ export const PUT = async (request: NextRequest) => {
       user.wonToday = wonToday;
     }
 
-    // Save the updated user
-    await user.save();
+    if(cardScratched !== undefined){
+      user.cardScratched = cardScratched;
+    }
 
+    // Save the updated user
+    console.log("saving")
+    await user.save();
+    console.log("user",user);
     return NextResponse.json(
       {
         message: "User rewards information updated successfully",
@@ -134,6 +138,7 @@ export const PUT = async (request: NextRequest) => {
           rewardsWon: user.rewardsWon,
           rewardsClaimable: user.rewardsClaimable,
           wonToday: user.wonToday,
+          cardScratched: user.cardScratched
         },
       },
       { status: 200 },
