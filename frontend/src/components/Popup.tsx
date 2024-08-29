@@ -7,11 +7,14 @@ import { Box } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
 import axios from "axios";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { toast } from "./ui/use-toast";
+import { ToastAction } from "./ui/toast";
+import { claimLottery, getLotteryAmount, swapWUsdcToApt } from "@/lib/apiRequests";
 
 export function AnimatedModalDemo({isUserWon}:{isUserWon: Boolean}) {
+  const { account, signTransaction } = useWallet();
   const { setOpen, open } = useModal();
   const [revealed, setRevealed] = useState(false);
-  const {account}= useWallet();
 
   useEffect(()=>{
     if(revealed && isUserWon)
@@ -62,6 +65,38 @@ export function AnimatedModalDemo({isUserWon}:{isUserWon: Boolean}) {
     setOpen(true);
   }, []);
 
+  const onClaim = async() => {
+    try {
+      // Handle the reward claim logic here
+
+      const lotteryAmountInUsd = await getLotteryAmount();
+      console.log("lotteryAmountInUsd", lotteryAmountInUsd)
+
+      const claimResponse = await claimLottery(account, signTransaction);
+      console.log("claimResponse", claimResponse);
+
+      // console.log("lotteryAmountInUsd", lotteryAmountInUsd)
+      const wUsdcSwapResponse = await swapWUsdcToApt((parseInt(lotteryAmountInUsd as string) / 1e6).toString());
+      console.log("wUsdcSwapResponseresponse", wUsdcSwapResponse);
+
+      toast({
+        variant: "default",
+        title: "Sucess!",
+        description: "Lottery rewards are claimed successfully",
+        // action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    }
+    catch (ex: any) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: ex.message,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+      console.log("there was an error", ex.message);
+    }
+  }
+
   const images = [
     "https://images.unsplash.com/photo-1517322048670-4fba75cbbb62?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "https://images.unsplash.com/photo-1573790387438-4da905039392?q=80&w=3425&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -82,7 +117,12 @@ export function AnimatedModalDemo({isUserWon}:{isUserWon: Boolean}) {
                 <div className="flex justify-center items-center h-full text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
                   $10 USD
                 </div>
-                <button className="mx-auto rounded-full border-2 border-gray-300 py-3 px-5 hover:bg-slate-200 text-xl bg-[linear-gradient(to_right,#F87AFF,#FB93D0,#FFDD99,#C3F0B2)] text-transparent bg-clip-text [-webkit-background-clip:text]">Claim</button>
+                <button 
+                className="mx-auto rounded-full border-2 border-gray-300 py-3 px-5 hover:bg-slate-200 text-xl bg-[linear-gradient(to_right,#F87AFF,#FB93D0,#FFDD99,#C3F0B2)] text-transparent bg-clip-text [-webkit-background-clip:text]"
+                onClick={onClaim}
+                >
+                  Claim
+                  </button>
               </ModalContent>
               ):(<ModalContent className="text-white h-full">
                 <p className="text-4xl font-bold text-center mb-8 text-gray-400">

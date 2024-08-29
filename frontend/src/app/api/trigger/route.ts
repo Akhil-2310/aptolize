@@ -60,8 +60,8 @@ export const POST = async (request: NextRequest) => {
 
       console.log("winner", addressWon);
 
-      const respone = await axios.put("https://aptolize.vercel.app/api/user", {
-        params: { address: addressWon, rewardsWon: lotteryAmount, wonToday: true  },
+      const respone = await axios.put("/api/user", {
+        params: { address: addressWon, rewardsWon: totalDepositsFivePercentagePerDay, wonToday: true  },
       });
 
       console.log("response", respone);
