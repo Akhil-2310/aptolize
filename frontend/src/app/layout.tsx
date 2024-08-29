@@ -10,6 +10,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { WalletProvider } from "@/components/WalletProvider";
 import { cn } from "@/lib/utils";
 import { Inter } from "next/font/google";
+import { Providers } from "./provider";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
@@ -33,7 +34,8 @@ export default function RootLayout({
               font.className
           )}
       >  
-        <WalletProvider>
+      <Providers>
+      <WalletProvider>
           {/* <Banner /> */}
           <Navbar />
           {children}
@@ -41,6 +43,7 @@ export default function RootLayout({
           <Analytics />
           <Toaster />
         </WalletProvider>
+      </Providers>
       </body>
     </html>
   );

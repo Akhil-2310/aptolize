@@ -25,6 +25,7 @@ import axios from "axios";
 import { toast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
 
+
 function WithdrawDialog({ totalDeposit }: { totalDeposit: string }) {
   const { account, signTransaction } = useWallet();
   const [amount, setAmount] = useState(0);

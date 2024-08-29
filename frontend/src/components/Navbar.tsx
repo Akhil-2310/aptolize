@@ -54,27 +54,42 @@ const MoonPayProvider = dynamic(() => import("@moonpay/moonpay-react").then((mod
 
 const MoonPayBuyWidget = dynamic(() => import("@moonpay/moonpay-react").then((mod) => mod.MoonPayBuyWidget), {
   ssr: false,
-}); 
+});
 
 const Navbar = () => {
-    const pathname = usePathname();
-     const [visible, setVisible] = useState(false);
-    return (
-      <>
-        <MoonPayProvider apiKey="pk_test_ipsatS3brsLguHTjxgIAa2Y6a6RBqSm" debug>
-          <header className="px-4 h-14 sticky top-0 inset-x-0 w-full bg-background/40 backdrop-blur-lg border-b border-border z-50">
-            <Container reverse>
-              <div className="flex items-center justify-between h-full mx-auto md:max-w-screen-xl">
-                <div className="flex items-start">
-                  <Link href="/" className="flex items-center gap-2">
-                    {/* <Icons.logo className="w-8 h-8" /> */}
-                    <Image src={logoImg} alt="saas logo" className="w-9 h-9 relative" />
-                    <span className="text-lg font-medium">Aptolize</span>
-                  </Link>
-                </div>
-                <div className="flex items-center gap-4">
-                  {pathname === "/app" ? (
-                    <nav className="items-center gap-6 hidden sm:flex">
+  const pathname = usePathname();
+  console.log("the path name", pathname);
+  const [visible, setVisible] = useState(false);
+  return (
+    <>
+      <MoonPayProvider apiKey="pk_test_ipsatS3brsLguHTjxgIAa2Y6a6RBqSm" debug>
+        <header className="px-4 h-14 sticky top-0 inset-x-0 w-full bg-background/40 backdrop-blur-lg border-b border-border z-50">
+          <Container reverse>
+            <div className="flex items-center justify-between h-full mx-auto md:max-w-screen-xl">
+              <div className="flex items-start">
+                <Link href="/" className="flex items-center gap-2">
+                  {/* <Icons.logo className="w-8 h-8" /> */}
+                  <Image src={logoImg} alt="saas logo" className="w-9 h-9 relative" />
+                  <span className="text-lg font-medium">Aptolize</span>
+                </Link>
+              </div>
+              <div className="flex items-center gap-4">
+                {pathname !== "/" ? (
+                  <>
+                    <nav className="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                      <ul className="flex items-center justify-center gap-8">
+                        <Link href="/app" className="hover:text-foreground/80 text-sm">
+                          Deposit
+                        </Link>
+                        <Link href="withdraw" className="hover:text-foreground/80 text-sm">
+                          Withdraw
+                        </Link>
+                        <Link href="#" className="hover:text-foreground/80 text-sm">
+                          Lucky Draw
+                        </Link>
+                      </ul>
+                    </nav>
+                    <div className="items-center gap-6 hidden sm:flex">
                       <WalletSelector />
                       <MoonPayBuyWidget
                         variant="overlay"
@@ -89,34 +104,35 @@ const Navbar = () => {
                       >
                         Buy
                       </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <nav className="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                      <ul className="flex items-center justify-center gap-8">
+                        <Link href="#" className="hover:text-foreground/80 text-sm">
+                          The Process
+                        </Link>
+                        <Link href="#" className="hover:text-foreground/80 text-sm">
+                          Features
+                        </Link>
+                        <Link href="#" className="hover:text-foreground/80 text-sm">
+                          FAQs
+                        </Link>
+                      </ul>
                     </nav>
-                  ) : (
-                    <>
-                      <nav className="hidden md:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                        <ul className="flex items-center justify-center gap-8">
-                          <Link href="#" className="hover:text-foreground/80 text-sm">
-                            The Process
-                          </Link>
-                          <Link href="#" className="hover:text-foreground/80 text-sm">
-                            Features
-                          </Link>
-                          <Link href="#" className="hover:text-foreground/80 text-sm">
-                            FAQs
-                          </Link>
-                        </ul>
-                      </nav>
-                      <Link href="/app" className={buttonVariants({ size: "sm", className: "hidden md:flex" })}>
-                        Launch App
-                      </Link>
-                    </>
-                  )}
-                </div>
+                    <Link href="/app" className={buttonVariants({ size: "sm", className: "hidden md:flex" })}>
+                      Launch App
+                    </Link>
+                  </>
+                )}
               </div>
-            </Container>
-          </header>
-        </MoonPayProvider>
-      </>
-    );
+            </div>
+          </Container>
+        </header>
+      </MoonPayProvider>
+    </>
+  );
 };
 
 export default Navbar

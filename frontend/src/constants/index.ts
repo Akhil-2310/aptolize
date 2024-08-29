@@ -3,16 +3,16 @@ import Icons from "@/components/Icons/Icons";
 export const perks = [
     {
         icon: Icons.auth,
-        title: "INR Deposit",
-        info: "Deposit in INR and we will stake your money using aptos",
+        title: "Deposit in Fiat",
+        info: "Deposit in INR and in return stake your money using aptos",
     },
     {
-        icon: Icons.customize,
+        icon: Icons.launch,
         title: "Lucky Draw Participation",
         info: "Particiate in the daily Lucky Draw and win big",
     },
     {
-        icon: Icons.launch,
+        icon: Icons.customize,
         title: "Withdraw your funds",
         info: "You can withdraw you funds with no lock in period",
     },
@@ -21,8 +21,8 @@ export const perks = [
 export const features = [
   {
     icon: Icons.bolt,
-    title: "Maximize Your Earnings",
-    info: "Deposit fiat and get a fixed interest of 10%.",
+    title: "Deposit in Fiat",
+    info: "Deposit in INR and in return stake your money using aptos",
   },
   {
     icon: Icons.palette,
@@ -32,22 +32,22 @@ export const features = [
   {
     icon: Icons.seo,
     title: "Win Big Every Day",
-    info: "Participate in our daily lotteries, where the longer you deposit, the higher your chances of winning additional rewards.",
+    info: "Participate in our daily lotteries, the higher your chances of winning.",
   },
   {
     icon: Icons.monitor,
-    title: "Only One Click",
-    info: "Just Click once and rest will be taken care.",
+    title: "Maximize Your Earnings",
+    info: "Deposit fiat and get a fixed interest of 10%.",
   },
   {
     icon: Icons.shop,
-    title: "E-Commerce Ready",
-    info: "Start selling online with our e-commerce features and integrations.",
+    title: "Easy Deposit and Withdrawa",
+    info: "Seamlessly deposit and withdraw funds with our user-friendly platform",
   },
   {
     icon: Icons.server,
-    title: "Secure Hosting",
-    info: "Enjoy peace of mind with secure and reliable hosting for your website.",
+    title: "Secure and Transparent",
+    info: "Your funds are safe with our top-notch security measures and transparent operations",
   },
 ];
 
