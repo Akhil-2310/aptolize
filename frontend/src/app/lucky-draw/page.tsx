@@ -174,7 +174,7 @@ const LuckyDrawPage = () => {
         </SimpleGrid>
 
         <Table className="mt-9">
-          <TableCaption>Lotteries Destributed</TableCaption>
+            <TableCaption>Lotteries Destributed</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="">Address</TableHead>

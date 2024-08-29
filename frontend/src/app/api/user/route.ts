@@ -52,6 +52,7 @@ export const GET = async (request: NextRequest) => {
           rewardsWon: user.rewardsWon,
           rewardsClaimable: user.rewardsClaimable,
           wonToday: user.wonToday,
+          cardScratched: user.cardScratched
         },
         { status: 200 },
       );
