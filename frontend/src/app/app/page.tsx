@@ -33,6 +33,9 @@ const Page = () => {
       console.log(`Depositing ${amount} USD`);
       const aptosAmount = amount / await aptosPriceInUsd();
       console.log(`Depositing ${aptosAmount} APTOS`);
+
+      const depositReponse = await deposit(account, BigInt(amount * 100000), signTransaction);
+      console.log("depositReponse", depositReponse);
       setActiveStep(1);
 
       // const fromTokenAmount = "0.001";
@@ -50,8 +53,8 @@ const Page = () => {
       console.log("stakeResponse", stakeResponse);
       setActiveStep(3);
 
-      const depositReponse = await deposit(account, BigInt(amount * 100000), signTransaction);
-      console.log("depositReponse", depositReponse);
+      // const depositReponse = await deposit(account, BigInt(amount * 100000), signTransaction);
+      // console.log("depositReponse", depositReponse);
 
       const userEndPointResponse = await axios.get("/api/user?address=" + account?.address);
       console.log("userEndPointResponse", userEndPointResponse);
