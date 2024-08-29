@@ -233,8 +233,8 @@ const Page = () => {
                 value={amount}
                 onChange={(e) => setAmount(parseFloat(e.target.value))}
               />
-              <span className="absolute inset-y-0 right-0 w-20 z-10 text-gray-400 pt-2">
-                {isNaN(parseFloat((amount / APTprice).toFixed(2))) ? 0 : parseFloat((amount / APTprice).toFixed(2))} APT
+              <span className="absolute inset-y-0 right-1 w-30 z-10 text-gray-400 pt-2">
+                {isNaN(parseFloat((amount / APTprice).toFixed(3))) ? 0 : parseFloat((amount / APTprice).toFixed(3))} APT
               </span>
             </div>
             <div className=" flex w-full items-center py-4">
