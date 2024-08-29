@@ -1,15 +1,38 @@
-"use client"
-import React from 'react'
-import { Box, Flex, Heading, Text, Divider, Input, Button, useColorModeValue, StepIndicator, StepStatus, StepIcon, StepNumber, StepTitle, StepDescription, StepSeparator } from '@chakra-ui/react';
-import { useState } from 'react';
-import { aptosPriceInUsd, deposit, getQuotePrice, stakeWusdcZusdcPair, swapAptToWUsdc, swapAptToZUsdc } from "@/lib/apiRequests";
+"use client";
+import React, { useEffect } from "react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Divider,
+  Input,
+  Button,
+  useColorModeValue,
+  StepIndicator,
+  StepStatus,
+  StepIcon,
+  StepNumber,
+  StepTitle,
+  StepDescription,
+  StepSeparator,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import {
+  aptosPriceInUsd,
+  deposit,
+  getQuotePrice,
+  stakeWusdcZusdcPair,
+  swapAptToWUsdc,
+  swapAptToZUsdc,
+} from "@/lib/apiRequests";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { useSteps } from '@chakra-ui/react';
-import { Stepper, Step } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { useSteps } from "@chakra-ui/react";
+import { Stepper, Step } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 
 const MotionBox = motion(Box);
 
@@ -18,20 +41,21 @@ const Page = () => {
   const [amount, setAmount] = useState(0);
   const [open, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [APTprice, setAPTprice] = useState(0);
 
   // Using Chakra's color mode to adjust colors for dark theme
-  const stepTitleColor = useColorModeValue('gray.300', 'white');
-  const stepDescriptionColor = useColorModeValue('gray.400', 'gray.500');
+  const stepTitleColor = useColorModeValue("gray.300", "white");
+  const stepDescriptionColor = useColorModeValue("gray.400", "gray.500");
 
-  const cardBg = useColorModeValue('gray.800', 'blackAlpha.900'); // Match black background
-  const inputBg = useColorModeValue('gray.700', 'blackAlpha.700');
+  const cardBg = useColorModeValue("gray.800", "blackAlpha.900"); // Match black background
+  const inputBg = useColorModeValue("gray.700", "blackAlpha.700");
 
   const handleConfirm = async () => {
     try {
       setLoading(true);
 
       console.log(`Depositing ${amount} USD`);
-      const aptosAmount = amount / await aptosPriceInUsd();
+      const aptosAmount = amount / (await aptosPriceInUsd());
       console.log(`Depositing ${aptosAmount} APTOS`);
 
       const depositReponse = await deposit(account, BigInt(amount * 100000), signTransaction);
@@ -47,7 +71,7 @@ const Page = () => {
       setActiveStep(2);
 
       // const wUSDC = BigInt(0.9 * 100000);
-      const wUSDC = BigInt(amount / 2 * 0.95 * 100000);
+      const wUSDC = BigInt((amount / 2) * 0.95 * 100000);
       const zUSDC = await getQuotePrice(wUSDC);
       const stakeResponse = await stakeWusdcZusdcPair(wUSDC, zUSDC);
       console.log("stakeResponse", stakeResponse);
@@ -90,64 +114,70 @@ const Page = () => {
   };
 
   const steps = [
-    { title: 'Deposit', description: 'Depositing ' + (amount ? amount : "0") + ' USD worth of APT' },
-    { title: 'Swap', description: 'Swapping APT to Stable coins(s) on Panora Swap' },
-    { title: 'Stake Liquidity', description: 'Staking liquidity on Cellana Finance' },
-    { title: 'Deposited', description: (amount ? amount : "0") + ' USD worth of APT deposited successfully' },
-  ]
+    { title: "Deposit", description: "Depositing " + (amount ? amount : "0") + " USD worth of APT" },
+    { title: "Swap", description: "Swapping APT to Stable coins(s) on Panora Swap" },
+    { title: "Stake Liquidity", description: "Staking liquidity on Cellana Finance" },
+    { title: "Deposited", description: (amount ? amount : "0") + " USD worth of APT deposited successfully" },
+  ];
 
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: steps.length,
-  })
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      setAPTprice(await aptosPriceInUsd());
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <Flex justify={"center"} align={"center"} gap={"20"}>
       <Flex justify="center" align="center" minHeight="100vh" bg="black">
-      <MotionBox
-        p={6}
-        borderRadius="md"
-        w="full"
-        maxW="500px" // Increased width to make the stepper bigger
-        boxShadow="xl"
-        transition={{ duration: 0.3 }}
-      >
-        <Stepper
-          index={activeStep}
-          orientation="vertical"
-          height="500px" // Increased height to make it taller
-          gap="4"
+        <MotionBox
+          p={6}
+          borderRadius="md"
+          w="full"
+          maxW="500px" // Increased width to make the stepper bigger
+          boxShadow="xl"
+          transition={{ duration: 0.3 }}
         >
-          {steps.map((step, index) => (
-            <Step key={index}>
-              <StepIndicator>
-                <StepStatus
-                  complete={<StepIcon color="teal.300" />} // Adjust icon color for dark theme
-                  incomplete={<StepNumber style={{ color: stepTitleColor }} />}
-                  active={<StepNumber  style={{ color: stepTitleColor }}/>}
-                />
-              </StepIndicator>
+          <Stepper
+            index={activeStep}
+            orientation="vertical"
+            height="500px" // Increased height to make it taller
+            gap="4"
+          >
+            {steps.map((step, index) => (
+              <Step key={index}>
+                <StepIndicator>
+                  <StepStatus
+                    complete={<StepIcon color="teal.300" />} // Adjust icon color for dark theme
+                    incomplete={<StepNumber style={{ color: stepTitleColor }} />}
+                    active={<StepNumber style={{ color: stepTitleColor }} />}
+                  />
+                </StepIndicator>
 
-              <MotionBox
-                flexShrink="0"
-                initial={{ opacity: 0, x: -50 }} // Animation effect for step titles and descriptions
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-              >
-                <StepTitle style={{fontSize: "lg", color: stepTitleColor}}>
-                  {step.title}
-                </StepTitle>
-                <StepDescription style={{fontSize: "sm", color: stepDescriptionColor}}>
-                  {step.description}
-                </StepDescription>
-              </MotionBox>
+                <MotionBox
+                  flexShrink="0"
+                  initial={{ opacity: 0, x: -50 }} // Animation effect for step titles and descriptions
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                >
+                  <StepTitle style={{ fontSize: "lg", color: stepTitleColor }}>{step.title}</StepTitle>
+                  <StepDescription style={{ fontSize: "sm", color: stepDescriptionColor }}>
+                    {step.description}
+                  </StepDescription>
+                </MotionBox>
 
-              <StepSeparator />
-            </Step>
-          ))}
-        </Stepper>
-      </MotionBox>
-    </Flex>
+                <StepSeparator />
+              </Step>
+            ))}
+          </Stepper>
+        </MotionBox>
+      </Flex>
       <Flex justify="center" align="center" minHeight="100vh" bg="black">
         <Box
           maxW="500px"
@@ -176,21 +206,30 @@ const Page = () => {
             <Text fontSize="md" color="gray.400" mb={2}>
               Amount to Deposit (in USD):
             </Text>
-            <Input
-              type="number"
-              bg={inputBg}
-              color="white"
-              mb={4}
-              height={"10"}
-              focusBorderColor="blue.600"
-              borderColor="gray.600"
-              placeholder="Enter deposit amount"
-              value={amount}
-              onChange={(e) => setAmount(parseFloat(e.target.value))}
-            />
-            <div className=' flex w-full items-center py-4'>
+            <div className="relative">
+              <Input
+                type="number"
+                bg={inputBg}
+                color="white"
+                mb={4}
+                height={"10"}
+                focusBorderColor="blue.600"
+                borderColor="gray.600"
+                placeholder="Enter deposit amount"
+                value={amount}
+                onChange={(e) => setAmount(parseFloat(e.target.value))}
+              />
+              <span className="absolute inset-y-0 right-0 w-20 z-10 text-gray-400 pt-2">
+                {isNaN(parseFloat((amount / APTprice).toFixed(2))) ? 0 : parseFloat((amount / APTprice).toFixed(2))} APT
+              </span>
+            </div>
+            <div className=" flex w-full items-center py-4">
               {isLoading ? (
-                <Button type="button" className="bg-blue-600 hover:bg-blue-700 w-full text-white px-4 py-3 rounded-md" disabled>
+                <Button
+                  type="button"
+                  className="bg-blue-600 hover:bg-blue-700 w-full text-white px-4 py-3 rounded-md"
+                  disabled
+                >
                   <div role="status" className="mr-2">
                     <svg
                       aria-hidden="true"
@@ -213,7 +252,11 @@ const Page = () => {
                   Processing...
                 </Button>
               ) : (
-                <Button className='bg-blue-600 hover:bg-blue-700 w-full text-white px-4 py-3 rounded-md' variant="default" onClick={handleConfirm}>
+                <Button
+                  className="bg-blue-600 hover:bg-blue-700 w-full text-white px-4 py-3 rounded-md"
+                  variant="default"
+                  onClick={handleConfirm}
+                >
                   Deposit
                 </Button>
               )}
@@ -222,7 +265,7 @@ const Page = () => {
         </Box>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
