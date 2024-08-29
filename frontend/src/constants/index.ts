@@ -3,8 +3,8 @@ import Icons from "@/components/Icons/Icons";
 export const perks = [
     {
         icon: Icons.auth,
-        title: "Deposit in Fiat",
-        info: "Deposit in INR and in return stake your money using aptos",
+        title: "Deposit in Fiat/Crypto",
+        info: "Deposit in any currency and in return stake your money using Aptos",
     },
     {
         icon: Icons.launch,
@@ -21,33 +21,33 @@ export const perks = [
 export const features = [
   {
     icon: Icons.bolt,
-    title: "Deposit in Fiat",
-    info: "Deposit in INR and in return stake your money using aptos",
+    title: "Deposit in Fiat/Crypto",
+    info: "Deposit in any currency and in return stake your money using Aptos.",
   },
   {
     icon: Icons.palette,
     title: "Daily Reward Management",
-    info: "Enjoy daily rewards when luck favors you.",
+    info: "Receive daily rewards—because sometimes, fortune favors the bold.",
   },
   {
     icon: Icons.seo,
     title: "Win Big Every Day",
-    info: "Participate in our daily lotteries, the higher your chances of winning.",
+    info: "Enter our daily lotteries for a chance to win big - your deposits could lead to a jackpot.",
   },
   {
     icon: Icons.monitor,
     title: "Maximize Your Earnings",
-    info: "Deposit fiat and get a fixed interest of 10%.",
+    info: "Deposit in your preferred currency and earn a fixed interest rate.",
   },
   {
     icon: Icons.shop,
     title: "Easy Deposit and Withdrawa",
-    info: "Seamlessly deposit and withdraw funds with our user-friendly platform",
+    info: "Experience hassle-free deposits and withdrawals with our intuitive platform.",
   },
   {
     icon: Icons.server,
     title: "Secure and Transparent",
-    info: "Your funds are safe with our top-notch security measures and transparent operations",
+    info: "Rest easy knowing your funds are protected by top-tier security and complete transparency.",
   },
 ];
 

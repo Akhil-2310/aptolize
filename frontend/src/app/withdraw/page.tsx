@@ -37,10 +37,10 @@ const Page = () => {
     const [isLoading, setLoading] = useState(false);
 
     const steps = [
-        { title: 'Withdrawing', description: 'Initialted Withdraw of '+amount+' USD' },
-        { title: 'Unstake', description: 'Unstaking your amount and swapping to USD' },
-        { title: 'Rewards', description: 'Withdrawing Stake Rewards' },
-        { title: 'Withdraw', description: 'Withdraw Successfull' },
+        { title: 'Withdraw', description: 'Withdrawing ' + (amount ? amount : "0") + ' USD worth of APT' },
+        { title: 'Unstake Liquidity', description: 'Unstaking liquidity and rewards from Cellana Finance' },
+        { title: 'Swap', description: 'Swapping Stable coins to APT on Panora Swap' },
+        { title: 'Withdrawn', description: (amount ? amount : "0") + ' USD worth of APT withdrawn successfully' },
     ]
 
     const { activeStep, setActiveStep } = useSteps({
@@ -187,14 +187,14 @@ const Page = () => {
                         Withdraw
                     </Heading>
                     <Text fontSize="md" color="gray.400" mb={4}>
-                        Withdraw your staked amount along with the yeild
+                        Withdraw deposited amount along with the daily yield in APT
                     </Text>
 
                     <Divider borderColor="gray.600" mb={4} />
 
                     <Box m={"5"}>
                         <Text fontSize="md" color="gray.400" mb={2}>
-                            Amount to Stake (USD):
+                            Amount to Withdraw (in USD):
                         </Text>
                         <Input
                             type="number"

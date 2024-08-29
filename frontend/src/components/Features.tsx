@@ -5,7 +5,7 @@ const features = [
   {
     title: "Maximize Your Earnings",
     description:
-      "Deposit fiat and get a fixed interest of 10%.",
+      "Deposit fiat and get a fixed interest.",
   },
   {
     title: "Daily Reward Management",

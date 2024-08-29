@@ -47,7 +47,7 @@ export const Hero = () => {
         </div>
         <div className="flex justify-center">
           <p className="text-center text-xl mt-8 max-w-md">
-            Grow your money with Aptolize!<br />Enjoy a 10% fixed interest rate on your deposits and unlock daily chances to win big rewards.
+            Grow your money with Aptolize!<br />Enjoy fixed interest rate on your deposits and unlock daily chances to win big rewards.
           </p>
         </div>
         <div className="flex justify-center mt-8 ">

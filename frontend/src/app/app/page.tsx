@@ -87,10 +87,10 @@ const Page = () => {
   };
 
   const steps = [
-    { title: 'Deposit', description: 'Depositing USD' },
-    { title: 'Swap', description: 'Swapping to wUsdc and zUsdc' },
-    { title: 'Add Liquidity', description: 'Adding liquidty to the liqidity pool' },
-    { title: 'Staked', description: 'Your USD staked successfully' },
+    { title: 'Deposit', description: 'Depositing ' + (amount ? amount : "0") + ' USD worth of APT' },
+    { title: 'Swap', description: 'Swapping APT to Stable coins(s) on Panora Swap' },
+    { title: 'Stake Liquidity', description: 'Staking liquidity on Cellana Finance' },
+    { title: 'Deposited', description: (amount ? amount : "0") + ' USD worth of APT deposited successfully' },
   ]
 
   const { activeStep, setActiveStep } = useSteps({
@@ -164,14 +164,14 @@ const Page = () => {
             Deposit
           </Heading>
           <Text fontSize="md" color="gray.400" mb={4}>
-            Deposit USD to earn rewards and participate in our daily lottery!
+            Deposit APT to earn fixed APY without any lock-in period!
           </Text>
 
           <Divider borderColor="gray.600" mb={4} />
 
           <Box m={"5"}>
             <Text fontSize="md" color="gray.400" mb={2}>
-              Amount to Stake (USD):
+              Amount to Deposit (in USD):
             </Text>
             <Input
               type="number"
