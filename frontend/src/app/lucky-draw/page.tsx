@@ -133,7 +133,33 @@ const LuckyDrawPage = () => {
   return (
     <>
       <div className="min-h-screen bg-background/40 text-white px-28 pb-28 pt-16">
-        <Table>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="bg-primary text-primary-foreground">
+            <CardHeader>
+              <CardTitle>Your Lottery Rewards</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-bold">5 USD</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-secondary text-secondary-foreground">
+            <CardHeader>
+              <CardTitle>Total Rewards Distributed</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-bold">20 USD</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-muted text-muted-foreground">
+            <CardHeader>
+              <CardTitle>Total Lotteries Completed</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-4xl font-bold">5</div>
+            </CardContent>
+          </Card>
+        </div>
+        <Table className="mt-9">
           <TableCaption>A list of users won today.</TableCaption>
           <TableHeader>
             <TableRow>
