@@ -13,7 +13,7 @@ import { motion } from 'framer-motion';
 
 const MotionBox = motion(Box);
 
-const page = () => {
+const Page = () => {
   const { account, signTransaction } = useWallet();
   const [amount, setAmount] = useState(0);
   const [open, setOpen] = useState(false);
@@ -120,8 +120,8 @@ const page = () => {
               <StepIndicator>
                 <StepStatus
                   complete={<StepIcon color="teal.300" />} // Adjust icon color for dark theme
-                  incomplete={<StepNumber color={stepTitleColor} />}
-                  active={<StepNumber color={stepTitleColor} />}
+                  incomplete={<StepNumber style={{ color: stepTitleColor }} />}
+                  active={<StepNumber  style={{ color: stepTitleColor }}/>}
                 />
               </StepIndicator>
 
@@ -131,10 +131,10 @@ const page = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <StepTitle fontSize="lg" color={stepTitleColor}>
+                <StepTitle style={{fontSize: "lg", color: stepTitleColor}}>
                   {step.title}
                 </StepTitle>
-                <StepDescription fontSize="sm" color={stepDescriptionColor}>
+                <StepDescription style={{fontSize: "sm", color: stepDescriptionColor}}>
                   {step.description}
                 </StepDescription>
               </MotionBox>
@@ -222,4 +222,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
