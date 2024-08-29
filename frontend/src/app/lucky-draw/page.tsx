@@ -19,6 +19,11 @@ import {
 } from "@/components/ui/table";
 import { AnimatedModalDemo } from "@/components/Popup";
 import { Modal } from "@/components/ui/animated-modal";
+import React from 'react';
+import { Box, Heading, Text, Divider, SimpleGrid, useColorModeValue } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+
+const MotionBox = motion(Box);
 
 const invoices = [
   {
@@ -80,6 +85,7 @@ const LuckyDrawPage = () => {
   const [userData, setUserData] = useState<UserData[]>([]);
   const { account, connected } = useWallet();
   const [isUserWon, setIsUserWon] = useState(false);
+  const [cardScratched, setCardScratched] = useState(true);
 
   // useEffect(() => {
   //   async function connect() {
@@ -123,8 +129,9 @@ const LuckyDrawPage = () => {
       const response = await axios.get("/api/user", {
         params: { address: account?.address },
       });
-
+      console.log("user data fetch", response);
       setIsUserWon(response.data.wonToday);
+      setCardScratched(response.data.cardScratched);
     }
 
     checkIfWinner();
@@ -133,7 +140,7 @@ const LuckyDrawPage = () => {
   return (
     <>
       <div className="min-h-screen bg-background/40 text-white px-28 pb-28 pt-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="bg-primary text-primary-foreground">
             <CardHeader>
               <CardTitle>Your Lottery Rewards</CardTitle>
@@ -158,9 +165,16 @@ const LuckyDrawPage = () => {
               <div className="text-4xl font-bold">5</div>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
+
+        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8} p={6} bg="black">
+          <AnimatedCard number="5 USD" title="Lottery Rewards Won" />
+          <AnimatedCard number="20 USD" title="Total Rewards Distributed" />
+          <AnimatedCard number="5" title="Number of Lotteries" />
+        </SimpleGrid>
+
         <Table className="mt-9">
-          <TableCaption>A list of users won today.</TableCaption>
+          <TableCaption>Lotteries Destributed</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="">Address</TableHead>
@@ -186,13 +200,41 @@ const LuckyDrawPage = () => {
           </TableRow>
         </TableFooter> */}
         </Table>
-        {isUserWon && (
-          <Modal>
-            <AnimatedModalDemo />
-          </Modal>
-        )}
+        {
+          !cardScratched && (<Modal>
+            <AnimatedModalDemo isUserWon={isUserWon} />
+          </Modal>)
+        }
       </div>
     </>
+  );
+};
+
+const AnimatedCard = ({ number, title }: { number: string, title: string }) => {
+  const cardBg = useColorModeValue('gray.800', 'blackAlpha.900');
+  const cardBorderColor = useColorModeValue('gray.700', 'blue.500'); // Glow color
+  const headingColor = useColorModeValue('gray.200', 'white');
+  const textColor = useColorModeValue('gray.400', 'gray.500');
+
+  return (
+    <MotionBox
+    cursor={"pointer"}
+      p={6}
+      bg={cardBg}
+      borderRadius="md"
+      boxShadow="lg"
+      border="1px solid #0062FF"
+      borderColor={"#0062FF"}
+      transition={{ duration: 0.3 }}
+    >
+      <Heading size="md" fontSize={"1xl"} mb={2} color={headingColor}>
+        {title}
+      </Heading>
+      <Divider borderColor="gray.600" />
+      <Text fontSize="3xl" fontWeight="bold" color={headingColor} mb={4}>
+        {number}
+      </Text>
+    </MotionBox>
   );
 };
 

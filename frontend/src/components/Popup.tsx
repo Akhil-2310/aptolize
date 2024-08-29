@@ -1,18 +1,22 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalTrigger, useModal } from "@/components/ui/animated-modal";
 import confetti from "canvas-confetti";
 import Link from "next/link";
+import { Box } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
+import axios from "axios";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
-export function AnimatedModalDemo() {
+export function AnimatedModalDemo({isUserWon}:{isUserWon: Boolean}) {
   const { setOpen, open } = useModal();
-  const handleClick = () => {
-    const end = Date.now() + 3 * 1000;
-    const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
+  const [revealed, setRevealed] = useState(false);
+  const {account}= useWallet();
 
-    const frame = () => {
-      if (Date.now() > end) return;
-
+  useEffect(()=>{
+    if(revealed && isUserWon)
+    {
+      const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
       confetti({
         particleCount: 2,
         angle: 60,
@@ -29,12 +33,28 @@ export function AnimatedModalDemo() {
         origin: { x: 1, y: 0.5 },
         colors: colors,
       });
+    }
+  },[revealed]);
+
+  const handleClick = () => {
+    const end = Date.now() + 3 * 1000;
+
+    const frame = () => {
+      if (Date.now() > end) return;
 
       requestAnimationFrame(frame);
     };
 
     frame();
   };
+
+  const handleRevealed= async ()=>{
+    setRevealed(true);
+    const response = await axios.put("/api/user", {
+      params: { address: account?.address, cardScratched: true },
+    });    
+    console.log("card scratched", response);
+  }
 
   useEffect(() => {
     // if (!open) return;
@@ -52,14 +72,34 @@ export function AnimatedModalDemo() {
   return (
     <>
       <div className="py-40  flex items-center justify-center min-h-full">
-        <ModalBody className="border-black dark:border-white border-b-8 border-border h-2/4">
-          <ModalContent className="bg-black border-black text-white">
-            <p className="text-4xl font-bold text-center mb-8 text-gray-400 dark:text-neutral-100">
-              Hoorah! You won the lottery today!
-            </p>
-            <div className="flex justify-center items-center h-full text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-              $10 USD
-            </div>
+        <ModalBody className="bg-gray-900 dark:border-white h-2/4">
+            {
+              revealed?(isUserWon?(
+                <ModalContent className="text-white h-full">
+                <p className="text-4xl font-semibold text-center mb-8 bg-[linear-gradient(to_right,#F87AFF,#FB93D0,#FFDD99,#C3F0B2)] text-transparent bg-clip-text [-webkit-background-clip:text]">
+                  Hoorah! You won the lottery today!
+                </p>
+                <div className="flex justify-center items-center h-full text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+                  $10 USD
+                </div>
+                <button className="mx-auto rounded-full border-2 border-gray-300 py-3 px-5 hover:bg-slate-200 text-xl bg-[linear-gradient(to_right,#F87AFF,#FB93D0,#FFDD99,#C3F0B2)] text-transparent bg-clip-text [-webkit-background-clip:text]">Claim</button>
+              </ModalContent>
+              ):(<ModalContent className="text-white h-full">
+                <p className="text-4xl font-bold text-center mb-8 text-gray-400">
+                Sorry Better Luck Next Time
+              </p>
+              </ModalContent>)):(
+                <div onClick={()=>handleRevealed()}>
+                <ModalContent className=" border-black text-black cursor-pointer" >
+                <div>
+                    <div className="flex justify-center items-center h-full text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+                    Reveal
+                </div>
+                </div>
+                </ModalContent>
+                </div>
+              )
+            }
 
             {/* <div className="py-10 flex flex-wrap gap-x-4 gap-y-6 items-start justify-start max-w-sm mx-auto">
                 <div className="flex  items-center justify-center">
@@ -87,20 +127,6 @@ export function AnimatedModalDemo() {
                   <span className="text-neutral-700 dark:text-neutral-300 text-sm">Paragliding</span>
                 </div>
               </div> */}
-          </ModalContent>
-          <ModalFooter className="gap-4">
-            <button
-              className="px-2 py-1 bg-gray-200 text-black dark:bg-black dark:border-black dark:text-white border border-gray-300 rounded-md text-sm w-28"
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </button>
-            <Link href="/withdraw">
-              <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-32">
-                Withdraw Now
-              </button>
-            </Link>
-          </ModalFooter>
         </ModalBody>
       </div>
     </>

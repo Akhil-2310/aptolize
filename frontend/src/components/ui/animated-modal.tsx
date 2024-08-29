@@ -103,7 +103,6 @@ export const ModalBody = ({ children, className }: { children: ReactNode; classN
               damping: 15,
             }}
           >
-            <CloseIcon />
             {children}
           </motion.div>
         </motion.div>
