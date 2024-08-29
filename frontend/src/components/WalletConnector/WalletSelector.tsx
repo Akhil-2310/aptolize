@@ -68,6 +68,13 @@ export function WalletSelector() {
         </DropdownMenuItem>
         {wallet && isAptosConnectWallet(wallet) && (
           <DropdownMenuItem asChild>
+            <a href="profile" target="_blank" rel="noopener noreferrer" className="flex gap-2">
+              <User className="h-4 w-4" /> Profile
+            </a>
+          </DropdownMenuItem>
+        )}
+        {wallet && isAptosConnectWallet(wallet) && (
+          <DropdownMenuItem asChild>
             <a href={APTOS_CONNECT_ACCOUNT_URL} target="_blank" rel="noopener noreferrer" className="flex gap-2">
               <User className="h-4 w-4" /> Account
             </a>
