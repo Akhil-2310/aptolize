@@ -13,8 +13,14 @@ export const GET = async (request: NextRequest) => {
   try {
     const url = new URL(request.url);
     const getAllAddresses = url.searchParams.get("getAllAddresses");
+    const getAllData = url.searchParams.get("getAllData");
 
-    if (getAllAddresses === "true") {
+    if (getAllData === "true") {
+      // Fetch all data from Document
+      const data = await Document.find({}).lean();
+
+      return NextResponse.json(data, { status: 200 });
+    } else if (getAllAddresses === "true") {
       // Fetch all addresses
       const addresses = await Document.find({}, "address").lean();
 

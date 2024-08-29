@@ -1,4 +1,4 @@
-'use client'
+"use client";
 // import { usePathname } from 'next/navigation'
 // import Image from 'next/image';
 // import logoImg from '../assets/images/logo.png';
@@ -40,7 +40,7 @@
 
 import Container from "./Container/Container";
 import { buttonVariants } from "@/components/ui/button";
-import logoImg from '../assets/images/logo.png';
+import logoImg from "../assets/images/logo.png";
 import { usePathname } from "next/navigation";
 import { WalletSelector } from "./WalletConnector/WalletSelector";
 import Link from "next/link";
@@ -84,7 +84,7 @@ const Navbar = () => {
                         <Link href="withdraw" className="hover:text-foreground/80 text-sm">
                           Withdraw
                         </Link>
-                        <Link href="#" className="hover:text-foreground/80 text-sm">
+                        <Link href="/lucky-draw" className="hover:text-foreground/80 text-sm">
                           Lucky Draw
                         </Link>
                       </ul>
@@ -135,4 +135,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar
+export default Navbar;
