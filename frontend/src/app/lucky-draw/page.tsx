@@ -3,9 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import DepositDialogButton from "@/components/DepositDialog";
 import ClaimRewardsDialog from "@/components/ClaimDeposit";
-import WithdrawDialog from "@/components/WithdrawDialog";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import {
   Table,
