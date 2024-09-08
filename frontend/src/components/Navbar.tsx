@@ -60,6 +60,7 @@ const Navbar = () => {
   const pathname = usePathname();
   console.log("the path name", pathname);
   const [visible, setVisible] = useState(false);
+  
   return (
     <>
       <MoonPayProvider apiKey="pk_test_ipsatS3brsLguHTjxgIAa2Y6a6RBqSm" debug>

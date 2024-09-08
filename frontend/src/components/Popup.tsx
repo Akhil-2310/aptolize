@@ -122,7 +122,7 @@ export function AnimatedModalDemo({isUserWon}:{isUserWon: Boolean}) {
                   Hoorah! You won the lottery today!
                 </p>
                 <div className="flex justify-center items-center h-full text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-                  $10 USD
+                  $1.33 USD
                 </div>
                 <button 
                 className="mx-auto rounded-full border-2 border-gray-300 py-3 px-5 hover:bg-slate-200 text-xl bg-[linear-gradient(to_right,#F87AFF,#FB93D0,#FFDD99,#C3F0B2)] text-transparent bg-clip-text [-webkit-background-clip:text]"
