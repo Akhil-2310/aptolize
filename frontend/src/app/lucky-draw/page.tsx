@@ -166,9 +166,9 @@ const LuckyDrawPage = () => {
         </div> */}
 
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8} p={6} bg="black">
-          <AnimatedCard number="5 USD" title="Lottery Rewards Won" />
-          <AnimatedCard number="20 USD" title="Total Rewards Distributed" />
-          <AnimatedCard number="5" title="Number of Lotteries" />
+          <AnimatedCard number="0 USD" title="Lottery Rewards Won" />
+          <AnimatedCard number="0 USD" title="Total Rewards Distributed" />
+          <AnimatedCard number="0" title="Number of Lotteries" />
         </SimpleGrid>
 
         <Table className="mt-9">
