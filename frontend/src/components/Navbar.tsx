@@ -47,6 +47,9 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { useEffect } from "react";
+import { checkAndCreateUser } from "@/lib/utils";
 
 const MoonPayProvider = dynamic(() => import("@moonpay/moonpay-react").then((mod) => mod.MoonPayProvider), {
   ssr: false,
@@ -58,9 +61,19 @@ const MoonPayBuyWidget = dynamic(() => import("@moonpay/moonpay-react").then((mo
 
 const Navbar = () => {
   const pathname = usePathname();
-  console.log("the path name", pathname);
   const [visible, setVisible] = useState(false);
-  
+  const {connected, account}=useWallet();
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    if (!account?.address) {
+      setUser(undefined);
+    }
+    if (connected && account?.address) {
+      checkAndCreateUser(account.address, setUser);
+    }
+  }, [connected, account?.address]);
+
   return (
     <>
       <MoonPayProvider apiKey="pk_test_ipsatS3brsLguHTjxgIAa2Y6a6RBqSm" debug>
